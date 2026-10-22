@@ -1,23 +1,145 @@
 ---
-// Placeholder until the real layouts are built (see PLAN.md).
-// It reads both collections so the content schema is exercised by `npm run build`.
-import { getCollection } from 'astro:content';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import Base from '../layouts/Base.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import PostRow from '../components/PostRow.astro';
+import { Content as Bio } from '../data/about.md';
 import { site } from '../data/site';
-import '../styles/global.css';
+import { getPosts, getProjects } from '../lib/content';
 
-const projects = await getCollection('projects', ({ data }) => !data.draft);
-const posts = await getCollection('blog', ({ data }) => !data.draft);
+const recentPosts = (await getPosts()).slice(0, 3);
+const featured = (await getProjects()).filter((p) => p.data.featured).slice(0, 2);
+
+// Fall back to a placeholder until public/photo.jpg is added.
+const hasPhoto = existsSync(join(process.cwd(), 'public', site.photo));
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<title>{site.name}</title>
-	</head>
-	<body>
-		<h1>{site.name}</h1>
-		<p>Site under construction: {projects.length} projects, {posts.length} posts.</p>
-	</body>
-</html>
+<Base>
+	<section class="hero">
+		{
+			hasPhoto ? (
+				<img class="photo" src={site.photo} alt={`Photo of ${site.name}`} width="140" height="140" />
+			) : (
+				<div class="photo placeholder" aria-hidden="true">photo</div>
+			)
+		}
+		<div class="bio">
+			<Bio />
+			<ul class="chips">
+				{
+					site.socials.map((s) => (
+						<li>
+							<a class="chip" href={s.url}>
+								{s.label}
+							</a>
+						</li>
+					))
+				}
+				<li><a class="chip cv" href={site.cv}>CV (PDF)</a></li>
+			</ul>
+		</div>
+	</section>
+
+	{
+		recentPosts.length > 0 && (
+			<section class="block">
+				<h2 class="section-head">
+					Recent writing <a href="/blog/">all →</a>
+				</h2>
+				<ul class="posts">
+					{recentPosts.map((post) => (
+						<PostRow post={post} withYear />
+					))}
+				</ul>
+			</section>
+		)
+	}
+
+	{
+		featured.length > 0 && (
+			<section class="block">
+				<h2 class="section-head">
+					Selected projects <a href="/projects/">all →</a>
+				</h2>
+				{featured.map((project) => (
+					<ProjectRow project={project} />
+				))}
+			</section>
+		)
+	}
+</Base>
+
+<style>
+	.hero {
+		display: grid;
+		grid-template-columns: 140px minmax(0, 1fr);
+		gap: 24px;
+		align-items: start;
+	}
+
+	.photo {
+		display: block;
+		width: 140px;
+		height: 140px;
+		object-fit: cover;
+		border-radius: 8px;
+	}
+
+	.placeholder {
+		display: grid;
+		place-items: center;
+		background: #f3f3f1;
+		border: 1px dashed #d6d6d2;
+		font-family: var(--mono);
+		font-size: 11px;
+		color: var(--muted);
+	}
+
+	.bio :global(p) {
+		margin: 0 0 12px;
+	}
+
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin: 16px 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.chip {
+		display: inline-block;
+		padding: 3px 11px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		font-family: var(--mono);
+		font-size: 12px;
+		color: var(--fg);
+	}
+
+	.chip:hover {
+		border-color: var(--salmon);
+	}
+
+	.chip.cv {
+		background: var(--mustard-soft);
+		border-color: #ecd58e;
+	}
+
+	.chip.cv:hover {
+		border-color: var(--mustard);
+	}
+
+	.block {
+		margin-top: 40px;
+	}
+
+	@media (max-width: 520px) {
+		.hero {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 18px;
+		}
+	}
+</style>

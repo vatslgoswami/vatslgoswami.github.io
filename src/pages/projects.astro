@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import { getProjects } from '../lib/content';
+
+const projects = await getProjects();
+---
+
+<Base title="Projects">
+	<h1 class="visually-hidden">Projects</h1>
+	<div class="list">
+		{projects.map((project) => <ProjectRow project={project} />)}
+	</div>
+</Base>
+
+<style>
+	.list {
+		margin-top: -22px;
+	}
+</style>

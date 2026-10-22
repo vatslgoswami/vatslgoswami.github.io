@@ -29,3 +29,16 @@ Personal site for Vatsl Krishnn Goswami, deployed to https://vatslgoswami.github
 - Site-wide data: `src/data/site.ts`; bio: `src/data/about.md`.
 - Style tokens: `src/styles/global.css`. Keep the look minimal; mustard and salmon are accents only.
 - Verify with `npm run build` before committing.
+
+## Git workflow (required)
+
+Never commit or push directly to `main`. Every push to `main` deploys the live site.
+
+1. Start from an up-to-date `main`: `git checkout main && git pull`.
+2. Create a branch for the task: `feat/<short-name>`, `fix/<short-name>` or `chore/<short-name>`.
+3. Commit in small, focused steps with clear messages.
+4. Run `npm run build` and make sure it passes before pushing.
+5. Push the branch and open a pull request into `main` with `gh pr create`. In the description, say what changed and how you checked it, and list anything left undone.
+6. Wait for the "Build check" CI job to pass. Fix failures on the same branch.
+7. Merge with `gh pr merge --squash --delete-branch` only after CI is green. If the task brief says the owner will review first, leave the PR open instead.
+8. After merging, confirm the "Deploy to GitHub Pages" run on `main` succeeds.

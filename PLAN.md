@@ -47,3 +47,7 @@ A minimal personal site for fellowship applications and similar: who I am, what 
 - The layout works at 375px wide with no horizontal scroll.
 - `draft: true` entries are hidden everywhere.
 - The deploy workflow publishes the site after a push to `main`. In the repo, Settings → Pages → Source must be set to "GitHub Actions".
+
+## How to work
+
+Follow the git workflow in `AGENTS.md`: work on a branch (e.g. `feat/site-layout`), open a PR into `main`, wait for the "Build check" CI job to pass, then squash-merge. Never push to `main` directly, because every push to `main` deploys the live site.

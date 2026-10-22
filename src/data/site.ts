@@ -9,7 +9,6 @@ export const site = {
 		{ label: 'GitHub', url: 'https://github.com/vatslgoswami' },
 		{ label: 'X', url: 'https://x.com/TODO' },
 		{ label: 'LinkedIn', url: 'https://www.linkedin.com/in/TODO' },
-		{ label: 'Medium', url: 'https://medium.com/@TODO' },
 	],
 	nav: [
 		{ label: 'About', href: '/' },

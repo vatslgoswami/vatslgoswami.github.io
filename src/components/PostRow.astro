@@ -20,7 +20,7 @@ const href = externalUrl ?? `/blog/${post.id}/`;
 const host = externalUrl ? new URL(externalUrl).hostname.replace(/^www\./, '') : undefined;
 ---
 
-<li class="post">
+<li class:list={['post', { 'with-year': withYear }]}>
 	<time datetime={date.toISOString().slice(0, 10)}>{label}</time>
 	<span>
 		<a href={href}>{title}</a>
@@ -31,11 +31,15 @@ const host = externalUrl ? new URL(externalUrl).hostname.replace(/^www\./, '') :
 <style>
 	.post {
 		display: grid;
-		grid-template-columns: 7.5em minmax(0, 1fr);
+		grid-template-columns: 4.5em minmax(0, 1fr);
 		gap: 14px;
 		align-items: baseline;
 		padding: 10px 0;
 		border-bottom: 1px solid var(--line);
+	}
+
+	.with-year {
+		grid-template-columns: 7.5em minmax(0, 1fr);
 	}
 
 	time {

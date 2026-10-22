@@ -1,0 +1,15 @@
+/* Design tokens. Minimal white page; mustard and salmon used sparingly. */
+:root {
+	--bg: #ffffff;
+	--fg: #1c1c1c;
+	--muted: #6f6f6f;
+	--line: #ececec;
+	--mustard: #d4a017;
+	--mustard-soft: #fbf1d3;
+	--mustard-ink: #7a5a00;
+	--salmon: #e0645a;
+	--salmon-soft: #fde6e3;
+	--sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+	--measure: 680px;
+}

@@ -1,0 +1,23 @@
+---
+// Placeholder until the real layouts are built (see PLAN.md).
+// It reads both collections so the content schema is exercised by `npm run build`.
+import { getCollection } from 'astro:content';
+import { site } from '../data/site';
+import '../styles/global.css';
+
+const projects = await getCollection('projects', ({ data }) => !data.draft);
+const posts = await getCollection('blog', ({ data }) => !data.draft);
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<title>{site.name}</title>
+	</head>
+	<body>
+		<h1>{site.name}</h1>
+		<p>Site under construction: {projects.length} projects, {posts.length} posts.</p>
+	</body>
+</html>

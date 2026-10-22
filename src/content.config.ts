@@ -1,0 +1,38 @@
+import { defineCollection } from 'astro:content';
+import { glob } from 'astro/loaders';
+import { z } from 'astro/zod';
+
+// One Markdown file per project in src/content/projects/
+const projects = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+	schema: z.object({
+		title: z.string(),
+		year: z.number(),
+		// e.g. "Research", "Internship", "Side project", "Course project"
+		kind: z.string(),
+		summary: z.string(),
+		tags: z.array(z.string()).default([]),
+		// Path under public/, e.g. "/images/projects/my-project.png"
+		image: z.string().optional(),
+		links: z
+			.array(z.object({ label: z.string(), url: z.string().url() }))
+			.default([]),
+		featured: z.boolean().default(false),
+		draft: z.boolean().default(false),
+	}),
+});
+
+// One Markdown file per post in src/content/blog/.
+// Set externalUrl to list a post hosted elsewhere (e.g. Medium); the body can then be empty.
+const blog = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+	schema: z.object({
+		title: z.string(),
+		date: z.coerce.date(),
+		description: z.string().optional(),
+		externalUrl: z.string().url().optional(),
+		draft: z.boolean().default(false),
+	}),
+});
+
+export const collections = { projects, blog };

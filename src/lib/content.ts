@@ -13,3 +13,9 @@ export async function getProjects() {
 		(a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title),
 	);
 }
+
+// Published shelf items, most recently added first.
+export async function getShelf() {
+	const items = await getCollection('shelf', ({ data }) => !data.draft);
+	return items.sort((a, b) => b.data.added.getTime() - a.data.added.getTime());
+}

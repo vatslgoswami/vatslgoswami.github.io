@@ -35,4 +35,22 @@ const blog = defineCollection({
 	}),
 });
 
-export const collections = { projects, blog };
+// One Markdown file per paper/post in src/content/shelf/ (files starting with _ are skipped).
+// The body holds your notes on why you like it; Markdown and links allowed.
+const shelf = defineCollection({
+	loader: glob({ pattern: '**/[^_]*.md', base: './src/content/shelf' }),
+	schema: z.object({
+		title: z.string(),
+		url: z.string().url(),
+		author: z.string().optional(),
+		// e.g. "paper", "blog", "book", "talk"
+		kind: z.string(),
+		// Year it was published (optional)
+		year: z.number().optional(),
+		// When you added it to the shelf; sets the order and the year groups
+		added: z.coerce.date(),
+		draft: z.boolean().default(false),
+	}),
+});
+
+export const collections = { projects, blog, shelf };

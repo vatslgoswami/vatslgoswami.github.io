@@ -14,5 +14,8 @@ export const site = {
 		{ label: 'About', href: '/' },
 		{ label: 'Projects', href: '/projects' },
 		{ label: 'Blogs', href: '/blog' },
+		{ label: 'Shelf', href: '/shelf' },
 	],
+	// Intro line at the top of the Shelf page
+	shelfIntro: "Papers and blogs I've read, with a few lines on why I like them.",
 };

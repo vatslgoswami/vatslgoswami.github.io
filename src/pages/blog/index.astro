@@ -15,6 +15,7 @@ for (const post of posts) {
 
 <Base title="Blogs">
 	<h1 class="visually-hidden">Blogs</h1>
+	{posts.length === 0 && <p class="empty">Posts coming soon.</p>}
 	{
 		[...byYear].map(([year, yearPosts]) => (
 			<section>

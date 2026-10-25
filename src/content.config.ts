@@ -2,9 +2,9 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-// One Markdown file per project in src/content/projects/
+// One Markdown file per project in src/content/projects/ (files starting with _ are skipped)
 const projects = defineCollection({
-	loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
+	loader: glob({ pattern: '**/[^_]*.md', base: './src/content/projects' }),
 	schema: z.object({
 		title: z.string(),
 		year: z.number(),
@@ -22,10 +22,10 @@ const projects = defineCollection({
 	}),
 });
 
-// One Markdown file per post in src/content/blog/.
+// One Markdown file per post in src/content/blog/ (files starting with _ are skipped).
 // Set externalUrl to list a post hosted elsewhere (e.g. Medium); the body can then be empty.
 const blog = defineCollection({
-	loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+	loader: glob({ pattern: '**/[^_]*.md', base: './src/content/blog' }),
 	schema: z.object({
 		title: z.string(),
 		date: z.coerce.date(),

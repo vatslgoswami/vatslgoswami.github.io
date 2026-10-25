@@ -108,3 +108,9 @@ h3 {
 	white-space: nowrap;
 	border: 0;
 }
+
+/* Shown when a list has no entries yet */
+.empty {
+	color: var(--muted);
+	font-size: 15px;
+}

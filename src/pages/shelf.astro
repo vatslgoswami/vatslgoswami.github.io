@@ -1,0 +1,163 @@
+---
+import { render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+import { getShelf } from '../lib/content';
+
+const items = await Promise.all(
+	(await getShelf()).map(async (item) => ({ item, Notes: (await render(item)).Content })),
+);
+
+// Group by year added; items are already newest first, so Map keeps years in order.
+const byYear = new Map<number, typeof items>();
+for (const entry of items) {
+	const year = entry.item.data.added.getUTCFullYear();
+	byYear.set(year, [...(byYear.get(year) ?? []), entry]);
+}
+
+const fmt = (date: Date, opts: Intl.DateTimeFormatOptions) =>
+	date.toLocaleDateString('en-US', { ...opts, timeZone: 'UTC' });
+const updated = items[0]?.item.data.added;
+---
+
+<Base title="Shelf" description={site.shelfIntro}>
+	<h1 class="visually-hidden">Shelf</h1>
+	<p class="intro">
+		{site.shelfIntro}
+		{
+			updated && (
+				<small>
+					updated {fmt(updated, { month: 'short', day: '2-digit', year: 'numeric' })} ·{' '}
+					{items.length} {items.length === 1 ? 'item' : 'items'}
+				</small>
+			)
+		}
+	</p>
+	{items.length === 0 && <p class="empty">Nothing on the shelf yet.</p>}
+	{
+		[...byYear].map(([year, entries]) => (
+			<section>
+				<h2 class="year">{year}</h2>
+				<ul class="items">
+					{entries.map(({ item, Notes }) => (
+						<li class="item">
+							<time datetime={item.data.added.toISOString().slice(0, 10)}>
+								{fmt(item.data.added, { month: 'short', day: '2-digit' })}
+							</time>
+							<div>
+								<a class="title" href={item.data.url}>
+									{item.data.title}
+								</a>
+								<span class="kind">{item.data.kind}</span>
+								{(item.data.author || item.data.year) && (
+									<div class="meta">
+										{[item.data.author, item.data.year].filter(Boolean).join(' · ')}
+									</div>
+								)}
+								{item.body?.trim() && (
+									<div class="notes">
+										<Notes />
+									</div>
+								)}
+							</div>
+						</li>
+					))}
+				</ul>
+			</section>
+		))
+	}
+</Base>
+
+<style>
+	.intro {
+		margin: 0 0 8px;
+	}
+
+	.intro small {
+		display: block;
+		margin-top: 2px;
+		font-family: var(--mono);
+		font-size: 12px;
+		color: var(--muted);
+	}
+
+	.year {
+		margin: 28px 0 4px;
+		font-family: var(--mono);
+		font-size: 13px;
+		font-weight: 500;
+		color: var(--salmon);
+	}
+
+	.items {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.item {
+		display: grid;
+		grid-template-columns: 4.5em minmax(0, 1fr);
+		gap: 14px;
+		align-items: baseline;
+		padding: 12px 0;
+		border-bottom: 1px solid var(--line);
+	}
+
+	time {
+		font-family: var(--mono);
+		font-size: 12px;
+		color: var(--muted);
+		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
+	}
+
+	.title {
+		color: var(--fg);
+		font-weight: 500;
+		border-bottom: 0;
+	}
+
+	.title:hover {
+		color: var(--salmon);
+	}
+
+	.kind {
+		margin-left: 8px;
+		padding: 1px 8px;
+		border-radius: 999px;
+		background: var(--mustard-soft);
+		color: var(--mustard-ink);
+		font-family: var(--mono);
+		font-size: 11px;
+		vertical-align: 1px;
+		white-space: nowrap;
+	}
+
+	.meta {
+		font-family: var(--mono);
+		font-size: 12px;
+		color: var(--muted);
+	}
+
+	.notes {
+		margin-top: 8px;
+		padding-left: 12px;
+		border-left: 2px solid var(--mustard-soft);
+		font-size: 15px;
+		color: #4a4a4a;
+	}
+
+	.notes :global(p),
+	.notes :global(ul) {
+		margin: 0 0 4px;
+	}
+
+	.notes :global(ul) {
+		padding-left: 18px;
+	}
+
+	.notes :global(li + li) {
+		margin-top: 2px;
+	}
+</style>

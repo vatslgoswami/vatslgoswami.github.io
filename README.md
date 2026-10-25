@@ -20,9 +20,10 @@ npm run build    # outputs to dist/
 | CV | `public/cv.pdf` |
 | Projects | one `.md` file per project in `src/content/projects/` |
 | Blog posts | one `.md` file per post in `src/content/blog/` |
+| Shelf (papers and posts you've read) | one `.md` file per item in `src/content/shelf/`; notes go in the body |
 | Project images | `public/images/projects/` |
 
-Field definitions live in `src/content.config.ts`. A blog post with `externalUrl` (e.g. a Medium link) is listed but not hosted here. Set `draft: true` to hide any entry.
+Each content folder has a `_template.md` to copy; files starting with `_` are ignored. Field definitions live in `src/content.config.ts`. A blog post with `externalUrl` (e.g. a Medium link) is listed but not hosted here. Set `draft: true` to hide any entry.
 
 ## Deploying
 

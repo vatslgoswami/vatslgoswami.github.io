@@ -8,9 +8,17 @@ const projects = await getProjects();
 
 <Base title="Projects">
 	<h1 class="visually-hidden">Projects</h1>
-	<div class="list">
-		{projects.map((project) => <ProjectRow project={project} />)}
-	</div>
+	{
+		projects.length > 0 ? (
+			<div class="list">
+				{projects.map((project) => (
+					<ProjectRow project={project} />
+				))}
+			</div>
+		) : (
+			<p class="empty">Projects coming soon.</p>
+		)
+	}
 </Base>
 
 <style>

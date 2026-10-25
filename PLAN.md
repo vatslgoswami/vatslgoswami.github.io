@@ -10,7 +10,7 @@ A minimal personal site for fellowship applications and similar: who I am, what 
 
 - **Stack:** Astro 7, static output, deployed to GitHub Pages by `.github/workflows/deploy.yml`.
 - **URL:** https://vatslgoswami.github.io (repo `vatslgoswami/vatslgoswami.github.io`).
-- **Pages:** About (`/`), Projects (`/projects`), Blogs (`/blog`), plus `/blog/<slug>` for posts written on the site.
+- **Pages:** About (`/`), Projects (`/projects`), Blogs (`/blog`), Shelf (`/shelf`), plus `/blog/<slug>` for posts written on the site.
 - **Style:** minimal and text-first, like ishanjmukherjee.github.io. White background, near-black text. Mustard (`--mustard`) and salmon (`--salmon`) are accents only: links, tags, the active nav item, year labels. Tokens are in `src/styles/global.css`. IBM Plex Sans for text and IBM Plex Mono for dates and meta, via Google Fonts with system fallbacks. Light theme only.
 - **No extras for now:** no publications, experience, news or tag filters.
 
@@ -40,6 +40,17 @@ A minimal personal site for fellowship applications and similar: who I am, what 
 - Plain list grouped by year (salmon year label), newest first: mono date on the left, title on the right.
 - Posts with `externalUrl` link out and show a small "↗" marker. The rest link to `/blog/<id>`.
 - Post page: title, date, Markdown body in a ~65-character column, "← All posts" link. Generate pages only for posts without `externalUrl`.
+
+## Shelf (`src/pages/shelf.astro`)
+
+- A reading log of papers and posts, with a few lines on why I like each one. This is option B in the wireframes.
+- An intro line (`site.shelfIntro`), then a mono "updated <date> · N items" line.
+- Items are grouped by the year they were added (salmon year label), newest first. Each row has the mono date added on the left. On the right: a title linking to `url`, a mustard pill for `kind`, a mono `author · year` line, and the notes (Markdown body) behind a thin mustard rule.
+- One Markdown file per item in `src/content/shelf/`.
+
+## Content files
+
+- Files starting with `_` in `src/content/*/` are skipped by the site. Each folder has a `_template.md` to copy.
 
 ## Done when
 

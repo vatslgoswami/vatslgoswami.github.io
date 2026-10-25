@@ -19,7 +19,7 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photo));
 	<section class="hero">
 		{
 			hasPhoto ? (
-				<img class="photo" src={site.photo} alt={`Photo of ${site.name}`} width="140" height="140" />
+				<img class="photo" src={site.photo} alt={`Photo of ${site.name}`} width="235" height="235" />
 			) : (
 				<div class="photo placeholder" aria-hidden="true">photo</div>
 			)
@@ -36,7 +36,7 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photo));
 						</li>
 					))
 				}
-				<li><a class="chip cv" href={site.cv}>CV (PDF)</a></li>
+				<li><a class="chip" href={site.cv}>CV (PDF)</a></li>
 			</ul>
 		</div>
 	</section>
@@ -71,18 +71,39 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photo));
 </Base>
 
 <style>
+	/*
+	 * The bio's children join the hero grid (display: contents) so the photo can share
+	 * rows with the bio: the photo is as wide as the name in the header and as tall
+	 * as both paragraphs plus the social chips.
+	 */
 	.hero {
+		--photo-width: 235px;
 		display: grid;
-		grid-template-columns: 140px minmax(0, 1fr);
-		gap: 24px;
-		align-items: start;
+		grid-template-columns: var(--photo-width) minmax(0, 1fr);
+		column-gap: 28px;
+		row-gap: 12px;
+	}
+
+	.bio {
+		display: contents;
+	}
+
+	.bio > :global(*) {
+		grid-column: 2;
 	}
 
 	.photo {
+		grid-row: 1 / span 3;
+		grid-column: 1;
 		display: block;
-		width: 140px;
-		height: 140px;
+		width: 100%;
+		/* Fill the rows without sizing them; the bio sets the height. */
+		height: 0;
+		min-height: 100%;
+		aspect-ratio: auto;
+		contain: size;
 		object-fit: cover;
+		object-position: 50% 30%;
 		border-radius: 8px;
 	}
 
@@ -97,14 +118,14 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photo));
 	}
 
 	.bio :global(p) {
-		margin: 0 0 12px;
+		margin: 0;
 	}
 
 	.chips {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 8px;
-		margin: 16px 0 0;
+		margin: 4px 0 0;
 		padding: 0;
 		list-style: none;
 	}
@@ -123,23 +144,23 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photo));
 		border-color: var(--salmon);
 	}
 
-	.chip.cv {
-		background: var(--mustard-soft);
-		border-color: #ecd58e;
-	}
-
-	.chip.cv:hover {
-		border-color: var(--mustard);
-	}
-
 	.block {
 		margin-top: 40px;
 	}
 
-	@media (max-width: 520px) {
+	@media (max-width: 600px) {
 		.hero {
 			grid-template-columns: minmax(0, 1fr);
-			gap: 18px;
+		}
+
+		.bio > :global(*) {
+			grid-column: 1;
+		}
+
+		.photo {
+			width: var(--photo-width);
+			height: var(--photo-width);
+			margin-bottom: 6px;
 		}
 	}
 </style>

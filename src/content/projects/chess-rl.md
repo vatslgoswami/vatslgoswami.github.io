@@ -1,7 +1,7 @@
 ---
 title: Chess Self-Play with Reinforcement Learning
 year: 2026
-kind: Course project
+kind: Project
 summary: An AlphaZero-style chess project combining exact endgame analysis, neural networks, search, and self-play reinforcement learning.
 tags: [RL, Self-Play, Chess]
 links:
@@ -14,7 +14,7 @@ How much stronger does a chess agent become when it learns from games against it
 
 ## From exact solutions to learned play
 
-Chess is a two-player, zero-sum game with far too many positions to solve exhaustively at the scale of a course project. Small endgames offer a tractable starting point: with only a few pieces on the board, we can enumerate legal positions and work backward from terminal outcomes to determine optimal play. Those exact values provide a reference for studying the errors made by an approximate value function.
+Chess is a two-player, zero-sum game with far too many positions to solve exhaustively at the scale of this project. Small endgames offer a tractable starting point: with only a few pieces on the board, we can enumerate legal positions and work backward from terminal outcomes to determine optimal play. Those exact values provide a reference for studying the errors made by an approximate value function.
 
 I worked on king-and-queen versus king (KQK), king-and-rook versus king (KRK), and king-and-pawn versus king (KPK). The endgame work included symmetry-reduced position indexing, retrograde analysis, value iteration, and comparisons with real-time dynamic programming. The resulting win/draw/loss classifications agreed with Syzygy tablebases on every legal position in the three solved endgames.
 

@@ -6,21 +6,23 @@ interface Props {
 }
 
 const { title, year, kind, summary, tags, links, image } = Astro.props.project.data;
+const githubLink = links.find((link) => link.label.toLowerCase() === 'github');
+const otherLinks = links.filter((link) => link !== githubLink);
 const href = Astro.props.project.data.detail ? `/projects/${Astro.props.project.id}/` : links[0]?.url;
 ---
 
 <article class:list={['project', { 'has-thumb': image }]}>
 	<div class="body">
 		<div class="meta">{year} · {kind}</div>
-		<h3>{href ? <a href={href}>{title}</a> : title}</h3>
+		<h3>{href ? <a href={href}>{title}</a> : title}{githubLink && <> <span class="divider" aria-hidden="true">|</span> <a class="github" href={githubLink.url}><svg aria-hidden="true" viewBox="0 0 16 16" width="1em" height="1em" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.49c-2.23.48-2.69-.94-2.69-.94-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.22.82 1.22.82.71 1.21 1.87.86 2.33.66.07-.52.28-.86.51-1.06-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 4.87c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.19c0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" /></svg> Github</a></>}</h3>
 		<p class="summary">{summary}</p>
 		{
-			(tags.length > 0 || links.length > 0) && (
+			(tags.length > 0 || otherLinks.length > 0) && (
 				<div class="tags">
 					{tags.map((tag) => (
 						<span class="tag">{tag}</span>
 					))}
-					{links.map((link) => (
+					{otherLinks.map((link) => (
 						<a href={link.url}>{link.label}</a>
 					))}
 				</div>
@@ -64,6 +66,10 @@ const href = Astro.props.project.data.detail ? `/projects/${Astro.props.project.
 	h3 a:hover {
 		color: var(--salmon);
 	}
+
+	.divider { color: var(--muted); font-weight: 400; }
+
+	.github { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
 
 	.summary {
 		margin: 0;

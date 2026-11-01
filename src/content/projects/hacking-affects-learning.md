@@ -7,6 +7,7 @@ tags: [RL, Learning Dynamics, Alignment]
 links:
   - { label: GitHub, url: "https://github.com/vatslgoswami/hacking-affects-learning" }
 featured: true
+pinned: true
 detail: true
 ---
 

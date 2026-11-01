@@ -22,6 +22,8 @@ This example motivates a distinction between two possible sources of difficulty:
 
 I built a gridworld in which an agent navigated to a visible beacon and claimed completion. Genuine success required reaching the beacon before making the claim. During shortcut training, a faulty checker also rewarded a claim at a fixed, unmarked square, even when the beacon was elsewhere. The agent could receive the same completion reward without doing the intended task.
 
+![A seven-by-seven grid showing the agent at the center, a beacon, and the shortcut square.](/images/projects/reward-hacking-grid.svg)
+
 The environment tracked genuine completion separately from accepted false claims, so a high reward did not automatically count as task success. The shortcut was not always the shortest route: for some beacon locations, reaching the real goal was more efficient. This made the agent's behavior dependent on the opportunity presented by each episode.
 
 ## Comparing training histories
@@ -38,6 +40,8 @@ The narrow-practice comparison gave agents experience with a similar repeated ro
 ## Correction and transfer
 
 After source training, I repaired the checker and evaluated separate branches from the saved agents. In **correction**, agents learned to reach variable beacons under accurate checking. In **transfer**, they learned a new pickup-and-delivery task: reach a package, pick it up, carry it to a destination, and claim completion. The two branches started independently from the source checkpoints, so delivery learning did not depend on first completing correction training.
+
+![Each source policy branches independently into beacon correction and pickup-and-delivery transfer, both with accurate completion checking.](/images/projects/reward-hacking-branches.svg)
 
 I measured genuine task success across training checkpoints, rather than treating reward alone as evidence that an agent had learned the intended behavior. Comparing the learning curves across histories addressed both recovery on the original task and transfer to a new sequential skill.
 

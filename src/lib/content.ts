@@ -6,11 +6,11 @@ export async function getPosts() {
 	return posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
-// Published projects, newest first (by year, then title).
+// Published projects, pinned first, then newest first (by year, then title).
 export async function getProjects() {
 	const projects = await getCollection('projects', ({ data }) => !data.draft);
 	return projects.sort(
-		(a, b) => b.data.year - a.data.year || a.data.title.localeCompare(b.data.title),
+		(a, b) => Number(b.data.pinned) - Number(a.data.pinned) || b.data.year - a.data.year || a.data.title.localeCompare(b.data.title),
 	);
 }
 

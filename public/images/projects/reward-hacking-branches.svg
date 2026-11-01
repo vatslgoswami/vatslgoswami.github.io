@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 330" role="img" aria-labelledby="title desc">
+<title id="title">Independent correction and transfer branches</title><desc id="desc">Each saved source policy is copied into two independent branches. Correction uses an accurate checker for beacon navigation. Transfer uses an accurate checker for pickup and delivery.</desc>
+<rect width="600" height="330" rx="8" fill="#faf9f6"/><g font-family="IBM Plex Sans, Arial, sans-serif" fill="#1c1c1c">
+<rect x="24" y="95" width="205" height="132" rx="8" fill="#fff" stroke="#dedbd4"/><text x="42" y="126" font-size="17" font-weight="700">Saved source policy</text><text x="42" y="152" font-size="14">Shortcut, narrow practice,</text><text x="42" y="173" font-size="14">varied practice, or fresh</text><text x="42" y="202" font-size="13" fill="#6f6f6f">One copy per branch</text>
+<path d="M229 161 H264 V80 H296 M264 161 V250 H296" fill="none" stroke="#aaa49a" stroke-width="2"/><path d="M290 75 L297 80 L290 85 M290 245 L297 250 L290 255" fill="none" stroke="#aaa49a" stroke-width="2"/>
+<rect x="300" y="24" width="276" height="112" rx="8" fill="#fff" stroke="#dedbd4"/><text x="318" y="54" font-size="17" font-weight="700">Correction</text><text x="318" y="79" font-size="14">Navigate to beacon → claim</text><text x="318" y="108" font-size="13" fill="#7a5a00">Accurate completion checker</text>
+<rect x="300" y="194" width="276" height="112" rx="8" fill="#fff" stroke="#dedbd4"/><text x="318" y="224" font-size="17" font-weight="700">Transfer</text><text x="318" y="249" font-size="14">Pick up → deliver → claim</text><text x="318" y="278" font-size="13" fill="#7a5a00">Accurate completion checker</text>
+</g></svg>

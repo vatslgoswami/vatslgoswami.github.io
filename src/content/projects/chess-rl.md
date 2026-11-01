@@ -18,6 +18,8 @@ Chess is a two-player, zero-sum game with far too many positions to solve exhaus
 
 I worked on king-and-queen versus king (KQK), king-and-rook versus king (KRK), and king-and-pawn versus king (KPK). The endgame work included symmetry-reduced position indexing, retrograde analysis, value iteration, and comparisons with real-time dynamic programming. The resulting win/draw/loss classifications agreed with Syzygy tablebases on every legal position in the three solved endgames.
 
+![Diagram showing endgame positions being solved and used to evaluate learned values and moves.](/images/projects/chess-endgames.svg)
+
 The KRK experiments also compared learned value functions with the exact solution. This made it possible to examine not just prediction error, but whether a model's estimates supported good moves against a strong defender. These results concern the restricted endgame setting, rather than full-game Elo.
 
 ## Learning from games and search
@@ -25,6 +27,8 @@ The KRK experiments also compared learned value functions with the exact solutio
 The full-game system uses a policy–value network: the policy estimates promising moves, while the value estimates the outcome from a position. A supervised stage uses positions from Lichess games to provide an initial policy before reinforcement learning.
 
 Monte Carlo tree search (MCTS) uses the network to guide exploration of candidate moves. Search produces a stronger training target than a single network prediction by combining the policy's preferences with lookahead. In self-play, the agent uses search to play both sides and records positions, search-derived move distributions, and game outcomes. The trainer samples those records to update the network, which in turn guides later search.
+
+![Diagram showing supervised initialization followed by a loop of policy-value network, search, self-play, and reinforcement learning.](/images/projects/chess-self-play.svg)
 
 ## Working within a compute budget
 

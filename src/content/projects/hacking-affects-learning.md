@@ -3,7 +3,7 @@ title: How reward hacking affects learning
 year: 2026
 kind: Research
 summary: A proposed study of whether learning a reward shortcut affects an agent's ability to correct its behavior or learn a new task.
-tags: [AI safety, Reinforcement learning]
+tags: [RL, Learning Dynamics, Alignment]
 links:
   - { label: GitHub, url: "https://github.com/vatslgoswami/hacking-affects-learning" }
 featured: true

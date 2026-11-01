@@ -18,6 +18,8 @@ const projects = defineCollection({
 			.array(z.object({ label: z.string(), url: z.string().url() }))
 			.default([]),
 		featured: z.boolean().default(false),
+		// Set true when the Markdown body should have its own project page.
+		detail: z.boolean().default(false),
 		draft: z.boolean().default(false),
 	}),
 });

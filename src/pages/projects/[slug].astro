@@ -1,0 +1,46 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { getProjects } from '../../lib/content';
+
+export async function getStaticPaths() {
+	const projects = await getProjects();
+	return projects
+		.filter((project) => project.data.detail)
+		.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+interface Props {
+	project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, year, kind, summary, links } = project.data;
+const githubLink = links.find((link) => link.label.toLowerCase() === 'github');
+const otherLinks = links.filter((link) => link !== githubLink);
+const { Content } = await render(project);
+---
+
+<Base title={title} description={summary}>
+	<article>
+		<header>
+			<h1>{title}{githubLink && <> <span class="divider" aria-hidden="true">|</span> <a class="github" href={githubLink.url}><svg aria-hidden="true" viewBox="0 0 16 16" width="18" height="18" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.49c-2.23.48-2.69-.94-2.69-.94-.36-.92-.89-1.17-.89-1.17-.73-.5.06-.49.06-.49.8.06 1.22.82 1.22.82.71 1.21 1.87.86 2.33.66.07-.52.28-.86.51-1.06-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.65 7.65 0 0 1 8 4.87c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.19c0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" /></svg> Github</a></>}</h1>
+			<div class="meta">{year} · {kind}</div>
+			{otherLinks.length > 0 && <p class="links">{otherLinks.map((link) => <a href={link.url}>{link.label} ↗</a>)}</p>}
+		</header>
+		<div class="prose"><Content /></div>
+		<p class="back"><a href="/projects/">← All projects</a></p>
+	</article>
+</Base>
+
+<style>
+	article { max-width: 65ch; }
+	h1 { margin: 0 0 6px; font-size: 28px; font-weight: 700; letter-spacing: -0.01em; }
+	.divider { font-weight: 400; color: var(--muted); }
+	.github { display: inline-flex; align-items: center; gap: 5px; font-size: 16px; font-weight: 400; white-space: nowrap; }
+	.meta { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+	.links { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 0; font-family: var(--mono); font-size: 13px; }
+	.prose { margin-top: 24px; }
+	.back { margin-top: 36px; font-size: 15px; }
+</style>

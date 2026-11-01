@@ -6,7 +6,7 @@ interface Props {
 }
 
 const { title, year, kind, summary, tags, links, image } = Astro.props.project.data;
-const href = links[0]?.url;
+const href = Astro.props.project.data.detail ? `/projects/${Astro.props.project.id}/` : links[0]?.url;
 ---
 
 <article class:list={['project', { 'has-thumb': image }]}>

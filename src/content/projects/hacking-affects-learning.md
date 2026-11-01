@@ -2,7 +2,7 @@
 title: How Does Reward Hacking Hinder Subsequent Learning?
 year: 2026
 kind: Research
-summary: A study of how reward hacking affects an agent's ability to learn after a faulty reward mechanism is repaired.
+summary: A study of how reward hacking affects an agent's ability to subsequently learn tasks after the faulty reward mechanism is repaired.
 tags: [RL, Learning Dynamics, Alignment]
 links:
   - { label: GitHub, url: "https://github.com/vatslgoswami/hacking-affects-learning" }

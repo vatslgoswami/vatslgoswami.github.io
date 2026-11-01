@@ -2,8 +2,8 @@
 title: Chess Self-Play with Reinforcement Learning
 year: 2026
 kind: Project
-summary: An AlphaZero-style chess project combining exact endgame analysis, neural networks, search, and self-play reinforcement learning.
-tags: [RL, Self-Play, Chess]
+summary: An AlphaZero-style chess bot combining a ResNet trained on Lichess data, and policy improvements using MCTS and self-play based RL.
+tags: [RL, Pre-Training]
 links:
   - { label: GitHub, url: "https://github.com/vatslgoswami/alphachess-RL" }
 featured: true

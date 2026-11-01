@@ -1,5 +1,5 @@
 ---
-title: Does Reward Hacking Hinder Subsequent Learning?
+title: How Does Reward Hacking Hinder Subsequent Learning?
 year: 2026
 kind: Research
 summary: A study of how reward hacking affects an agent's ability to learn after a faulty reward mechanism is repaired.

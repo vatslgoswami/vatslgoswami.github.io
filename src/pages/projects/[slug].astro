@@ -36,9 +36,8 @@ const { Content } = await render(project);
 </Base>
 
 <style>
-	article { max-width: 65ch; }
 	.meta { font-family: var(--mono); font-size: 13px; color: var(--muted); }
 	.links { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 0; font-family: var(--mono); font-size: 13px; }
-	.prose { margin-top: 24px; }
+	.prose { max-width: 65ch; margin-top: 24px; }
 	.back { margin-top: 36px; font-size: 15px; }
 </style>

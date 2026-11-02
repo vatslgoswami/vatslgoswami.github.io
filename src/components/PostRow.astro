@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import ProjectTitle from './ProjectTitle.astro';
 
 interface Props {
 	post: CollectionEntry<'blog'>;
@@ -21,33 +22,23 @@ const host = externalUrl ? new URL(externalUrl).hostname.replace(/^www\./, '') :
 ---
 
 <li class="post">
-	<a href={href}>{title}</a>{' '}
-	<time datetime={date.toISOString().slice(0, 10)}>{label}</time>
+	<div class="meta"><time datetime={date.toISOString().slice(0, 10)}>{label}</time> · Blog</div>
+	<ProjectTitle {title} {href} level="h3" />
 	{host && <small>on {host} <span aria-label="external link">↗</span></small>}
 </li>
 
 <style>
 	.post {
-		padding: 10px 0;
+		padding: 22px 0;
 		border-bottom: 1px solid var(--line);
 	}
 
-	time {
-		margin-left: 8px;
+	.meta {
 		font-family: var(--mono);
 		font-size: 12px;
 		color: var(--muted);
 		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
-	}
-
-	a {
-		color: var(--fg);
-		border-bottom: 0;
-	}
-
-	a:hover {
-		color: var(--salmon);
 	}
 
 	small {

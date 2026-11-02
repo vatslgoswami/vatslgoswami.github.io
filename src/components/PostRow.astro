@@ -4,19 +4,12 @@ import ProjectTitle from './ProjectTitle.astro';
 
 interface Props {
 	post: CollectionEntry<'blog'>;
-	// Show the year in the date (About page) or leave it to the year heading (Blogs page).
-	withYear?: boolean;
 }
 
-const { post, withYear = false } = Astro.props;
+const { post } = Astro.props;
 const { title, date, externalUrl } = post.data;
 
-const label = date.toLocaleDateString('en-US', {
-	month: 'short',
-	day: '2-digit',
-	year: withYear ? 'numeric' : undefined,
-	timeZone: 'UTC',
-});
+const label = date.getUTCFullYear();
 const href = externalUrl ?? `/blog/${post.id}/`;
 const host = externalUrl ? new URL(externalUrl).hostname.replace(/^www\./, '') : undefined;
 ---

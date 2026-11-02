@@ -20,29 +20,20 @@ const href = externalUrl ?? `/blog/${post.id}/`;
 const host = externalUrl ? new URL(externalUrl).hostname.replace(/^www\./, '') : undefined;
 ---
 
-<li class:list={['post', { 'with-year': withYear }]}>
+<li class="post">
+	<a href={href}>{title}</a>{' '}
 	<time datetime={date.toISOString().slice(0, 10)}>{label}</time>
-	<span>
-		<a href={href}>{title}</a>
-		{host && <small>on {host} <span aria-label="external link">↗</span></small>}
-	</span>
+	{host && <small>on {host} <span aria-label="external link">↗</span></small>}
 </li>
 
 <style>
 	.post {
-		display: grid;
-		grid-template-columns: 4.5em minmax(0, 1fr);
-		gap: 14px;
-		align-items: baseline;
 		padding: 10px 0;
 		border-bottom: 1px solid var(--line);
 	}
 
-	.with-year {
-		grid-template-columns: 7.5em minmax(0, 1fr);
-	}
-
 	time {
+		margin-left: 8px;
 		font-family: var(--mono);
 		font-size: 12px;
 		color: var(--muted);

@@ -6,4 +6,4 @@ kind: article
 added: 2026-01-01
 ---
 
-- Beautiful ideas about how AI is a collective action problem. Also loved the distinction between vertical and horizontal improvement of AI.
+- Beautiful ideas about how AI is a collective action problem; horizontal v/s vertical improvement of AI.

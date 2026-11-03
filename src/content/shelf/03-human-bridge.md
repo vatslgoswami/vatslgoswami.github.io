@@ -1,5 +1,5 @@
 ---
-title: "The Human Bridge to Trustworthy AI: Independent Ombudspeople Could Help Verify Claims by Companies and Countries about AI"
+title: "The Human Bridge to Trustworthy AI"
 url: "https://milesbrundage.substack.com/p/the-human-bridge-to-trustworthy-ai"
 author: "Miles Brundage"
 kind: article

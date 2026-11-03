@@ -17,5 +17,5 @@ export async function getProjects() {
 // Published shelf items, most recently added first.
 export async function getShelf() {
 	const items = await getCollection('shelf', ({ data }) => !data.draft);
-	return items.sort((a, b) => b.data.added.getTime() - a.data.added.getTime());
+	return items.sort((a, b) => b.data.added.getTime() - a.data.added.getTime() || a.id.localeCompare(b.id));
 }

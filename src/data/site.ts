@@ -17,5 +17,5 @@ export const site = {
 		{ label: 'Shelf', href: '/shelf' },
 	],
 	// Intro line at the top of the Shelf page
-	shelfIntro: "Papers and blogs I've read, with a few lines on why I like them.",
+	shelfIntro: "Papers, posts, and talks I've enjoyed or thought about.",
 };

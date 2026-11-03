@@ -4,7 +4,7 @@ export const site = {
 	description: 'Research, projects and writing by Vatsl Krishnn Goswami.',
 	email: 'vatslgoswami@gmail.com',
 	photo: '/photo.jpg', // public/photo.jpg, square
-	cv: '/cv.pdf', // add public/cv.pdf
+	cv: '/cv.pdf',
 	socials: [
 		{ label: 'GitHub', url: 'https://github.com/vatslgoswami' },
 		{ label: 'X', url: 'https://x.com/oogwayjunior' },

@@ -4,34 +4,15 @@ import PostRow from '../../components/PostRow.astro';
 import { getPosts } from '../../lib/content';
 
 const posts = await getPosts();
-
-// Group by year; posts are already newest first, so Map keeps years in order.
-const byYear = new Map<number, typeof posts>();
-for (const post of posts) {
-	const year = post.data.date.getUTCFullYear();
-	byYear.set(year, [...(byYear.get(year) ?? []), post]);
-}
 ---
 
 <Base title="Blogs">
 	<h1 class="visually-hidden">Blogs</h1>
-	{posts.length === 0 && <p class="empty">Posts coming soon.</p>}
-	{
-		[...byYear].map(([year, yearPosts]) => (
-			<section>
-				<h2 class="year-label year-heading">{year}</h2>
-				<ul class="posts">
-					{yearPosts.map((post) => (
-						<PostRow post={post} />
-					))}
-				</ul>
-			</section>
-		))
-	}
+	{posts.length === 0 ? (
+		<p class="empty">Posts coming soon.</p>
+	) : (
+		<ul class="posts">
+			{posts.map((post) => <PostRow post={post} />)}
+		</ul>
+	)}
 </Base>
-
-<style>
-	section:first-of-type .year-heading {
-		margin-top: 0;
-	}
-</style>

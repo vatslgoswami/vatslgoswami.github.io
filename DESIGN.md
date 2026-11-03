@@ -10,6 +10,7 @@ Keep the site minimal, readable, and consistent. Use IBM Plex Sans for body text
 | Year group heading | `--text-year` | 22px |
 | Project and blog list title | `--text-row-title` | 19px |
 | Body and shelf notes | `--text-body` | 17px |
+| Home section heading | `--text-body` | 17px |
 | Secondary copy and back links | `--text-secondary` | 15px |
 | Detail-page metadata | `--text-meta` | 13px |
 | Code blocks | `--text-code` | 14px |

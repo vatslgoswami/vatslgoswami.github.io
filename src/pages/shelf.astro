@@ -21,7 +21,7 @@ for (const entry of items) {
 	{items.length === 0 && <p class="empty">Nothing on the shelf yet.</p>}
 	{[...byYear].map(([year, entries]) => (
 		<section>
-			<h2 class="year">{year}</h2>
+			<h2 class="year-label year-heading">{year}</h2>
 			<ul class="items">
 				{entries.map(({ item, Notes }) => (
 					<li class="item">
@@ -36,11 +36,10 @@ for (const entry of items) {
 
 <style>
 	.intro { margin: 0 0 24px; }
-	.year { margin: 28px 0 12px; font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--salmon); }
 	.items { margin: 0; padding-left: 22px; }
-	.item { padding-left: 2px; margin-bottom: 14px; font-size: 19px; }
+	.item { padding-left: 2px; margin-bottom: 14px; font-size: var(--text-row-title); }
 	.item > a { font-weight: 500; }
-	.notes { color: #4a4a4a; font-size: 17px; }
+	.notes { color: #4a4a4a; font-size: var(--text-body); }
 	.notes :global(ul) { margin: 4px 0 0; padding-left: 22px; list-style: none; }
 	.notes :global(li) { position: relative; }
 	.notes :global(li)::before { content: '→'; position: absolute; right: calc(100% + 8px); }

@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import ProjectTitle from './ProjectTitle.astro';
+import ContentTitle from './ContentTitle.astro';
+import YearMeta from './YearMeta.astro';
 
 interface Props {
 	project: CollectionEntry<'projects'>;
@@ -12,10 +13,10 @@ const otherLinks = links.filter((link) => link !== githubLink);
 const href = Astro.props.project.data.detail ? `/projects/${Astro.props.project.id}/` : links[0]?.url;
 ---
 
-<article class:list={['project', { 'has-thumb': image }]}>
+<article class:list={['project', 'list-row', { 'has-thumb': image }]}>
 	<div class="body">
-		<div class="meta">{year} · {kind}</div>
-		<ProjectTitle {title} {href} githubUrl={githubLink?.url} level="h3" />
+		<YearMeta {year} {kind} />
+		<ContentTitle {title} {href} githubUrl={githubLink?.url} level="h3" />
 		<p class="summary">{summary}</p>
 		{
 			(tags.length > 0 || otherLinks.length > 0) && (
@@ -38,23 +39,15 @@ const href = Astro.props.project.data.detail ? `/projects/${Astro.props.project.
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
 		gap: 20px;
-		padding: 22px 0;
-		border-bottom: 1px solid var(--line);
 	}
 
 	.project.has-thumb {
 		grid-template-columns: minmax(0, 1fr) 160px;
 	}
 
-	.meta {
-		font-family: var(--mono);
-		font-size: 12px;
-		color: var(--muted);
-	}
-
 	.summary {
 		margin: 0;
-		font-size: 15px;
+		font-size: var(--text-secondary);
 		color: #4a4a4a;
 		display: -webkit-box;
 		-webkit-box-orient: vertical;
@@ -73,7 +66,7 @@ const href = Astro.props.project.data.detail ? `/projects/${Astro.props.project.
 	}
 
 	.tag {
-		font-size: 11px;
+		font-size: var(--text-micro);
 		padding: 1px 8px;
 		border-radius: 999px;
 		background: var(--mustard-soft);
@@ -81,7 +74,7 @@ const href = Astro.props.project.data.detail ? `/projects/${Astro.props.project.
 	}
 
 	.tags a {
-		font-size: 12px;
+		font-size: var(--text-small);
 	}
 
 	.thumb {

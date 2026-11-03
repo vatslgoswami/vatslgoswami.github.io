@@ -1,0 +1,10 @@
+---
+interface Props {
+	year: number;
+	kind: string;
+	datetime?: string;
+}
+const { year, kind, datetime } = Astro.props;
+---
+
+<div class="year-meta">{datetime ? <time class="year-meta-year" datetime={datetime}>{year}</time> : <span class="year-meta-year">{year}</span>}<span class="year-meta-kind"> · {kind}</span></div>

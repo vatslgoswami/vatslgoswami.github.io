@@ -12,6 +12,16 @@
 	--sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 	--mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 	--measure: 931px;
+	--reading-measure: 65ch;
+	--text-micro: 11px;
+	--text-small: 12px;
+	--text-code: 14px;
+	--text-meta: 13px;
+	--text-secondary: 15px;
+	--text-body: 17px;
+	--text-row-title: 19px;
+	--text-year: 22px;
+	--text-page-title: 28px;
 }
 
 /* Base */
@@ -30,7 +40,7 @@ body {
 	background: var(--bg);
 	color: var(--fg);
 	font-family: var(--sans);
-	font-size: 17px;
+	font-size: var(--text-body);
 	line-height: 1.65;
 	overflow-wrap: break-word;
 }
@@ -71,14 +81,15 @@ h3 {
 	align-items: baseline;
 	gap: 12px;
 	margin: 0 0 4px;
-	font-size: 13px;
+	font-size: var(--text-body);
 	font-weight: 600;
 	letter-spacing: 0.06em;
 	text-transform: uppercase;
-	color: var(--muted);
+	color: var(--salmon);
 }
 
 .section-head a {
+	font-size: var(--text-meta);
 	font-weight: 400;
 	letter-spacing: 0;
 	text-transform: none;
@@ -112,5 +123,29 @@ h3 {
 /* Shown when a list has no entries yet */
 .empty {
 	color: var(--muted);
-	font-size: 15px;
+	font-size: var(--text-secondary);
 }
+
+/* Reusable typography for dates, section years and long-form pages. */
+.year-label {
+	font-family: var(--mono);
+	font-size: var(--text-year);
+	font-weight: 600;
+	line-height: 1.25;
+	color: var(--salmon);
+	font-variant-numeric: tabular-nums;
+}
+
+.year-heading { margin: 28px 0 12px; }
+.year-meta { font-family: var(--mono); font-size: var(--text-small); color: var(--muted); font-variant-numeric: tabular-nums; }
+.year-meta-kind { font-family: var(--mono); font-size: var(--text-small); color: var(--muted); }
+.page-title { margin: 0 0 6px; font-size: var(--text-page-title); font-weight: 700; letter-spacing: -0.01em; text-wrap: normal; }
+.page-meta { font-family: var(--mono); font-size: var(--text-meta); color: var(--muted); }
+.prose { max-width: var(--reading-measure); margin-top: 24px; }
+.prose img { border-radius: 4px; }
+.prose pre { overflow-x: auto; padding: 12px 14px; border-radius: 4px; font-size: var(--text-code); }
+.prose code { font-family: var(--mono); font-size: 0.9em; }
+.prose blockquote { margin: 0; padding-left: 16px; border-left: 3px solid var(--mustard-soft); color: var(--muted); }
+.back-link { margin-top: 36px; font-size: var(--text-secondary); }
+
+.list-row { padding: 22px 0; border-bottom: 1px solid var(--line); }

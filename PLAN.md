@@ -14,11 +14,13 @@ A minimal personal site for fellowship applications and similar: who I am, what 
 - **Style:** minimal and text-first, like ishanjmukherjee.github.io. White background, near-black text. Mustard (`--mustard`) and salmon (`--salmon`) are accents only: links, tags, the active nav item, year labels. Tokens are in `src/styles/global.css`. IBM Plex Sans for text and IBM Plex Mono for dates and meta, via Google Fonts with system fallbacks. Light theme only.
 - **No extras for now:** no publications, experience, news or tag filters.
 
+UI implementation conventions and the typography scale are documented in [DESIGN.md](DESIGN.md).
+
 ## Shared layout
 
 - `src/layouts/Base.astro`: html shell, `<title>`, meta description, favicon, Google Fonts link, global.css.
 - Header: name on the left (links to `/`), nav on the right (`site.nav`). The active item gets a mustard underline.
-- Content column about 680px wide (`--measure`), centred, with a 16px minimum side gutter. Must work at phone width.
+- Content column uses `--measure`, centred, with a 16px minimum side gutter. Long-form text uses `--reading-measure`. Must work at phone width.
 - Footer: `© <year> Vatsl Krishnn Goswami`.
 
 ## About (`src/pages/index.astro`)
@@ -32,20 +34,18 @@ A minimal personal site for fellowship applications and similar: who I am, what 
 ## Projects (`src/pages/projects.astro`)
 
 - Medium-style rows, newest first (by `year`). Left: meta line `year · kind` in mono, bold title, summary clamped to 2 lines, then mustard tag pills and salmon link labels (`links`). Right: 3:2 thumbnail from `image`, if one is set.
-- The title links to the first entry in `links` if there is one.
-- No project detail pages in v1.
+- A project with `detail: true` links its title to its detail page; otherwise the title links to its first entry in `links`, if present. GitHub links appear beside the title.
 
 ## Blogs (`src/pages/blog/index.astro`, `src/pages/blog/[slug].astro`)
 
-- Plain list grouped by year (salmon year label), newest first: mono date on the left, title on the right.
+- Plain list, newest first: small grey year and Blog label above the title, matching project rows.
 - Posts with `externalUrl` link out and show a small "↗" marker. The rest link to `/blog/<id>`.
 - Post page: title, date, Markdown body in a ~65-character column, "← All posts" link. Generate pages only for posts without `externalUrl`.
 
 ## Shelf (`src/pages/shelf.astro`)
 
 - A reading log of papers and posts, with a few lines on why I like each one. This is option B in the wireframes.
-- An intro line (`site.shelfIntro`), then a mono "updated <date> · N items" line.
-- Items are grouped by the year they were added (salmon year label), newest first. Each row has the mono date added on the left. On the right: a title linking to `url`, a mustard pill for `kind`, a mono `author · year` line, and the notes (Markdown body) behind a thin mustard rule.
+- An intro line (`site.shelfIntro`), followed by items grouped by the year they were added. Each item links its title, names its author when available, and displays its notes as nested arrows.
 - One Markdown file per item in `src/content/shelf/`.
 
 ## Content files

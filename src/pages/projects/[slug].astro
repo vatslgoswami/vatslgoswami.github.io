@@ -2,7 +2,8 @@
 import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import ProjectTitle from '../../components/ProjectTitle.astro';
+import ArticleBody from '../../components/ArticleBody.astro';
+import ContentTitle from '../../components/ContentTitle.astro';
 import { getProjects } from '../../lib/content';
 
 export async function getStaticPaths() {
@@ -26,18 +27,14 @@ const { Content } = await render(project);
 <Base title={title} description={summary}>
 	<article>
 		<header>
-			<ProjectTitle {title} githubUrl={githubLink?.url} level="h1" />
-			<div class="meta">{year} · {kind}</div>
+			<ContentTitle {title} githubUrl={githubLink?.url} level="h1" />
+			<div class="page-meta">{year} · {kind}</div>
 			{otherLinks.length > 0 && <p class="links">{otherLinks.map((link) => <a href={link.url}>{link.label} ↗</a>)}</p>}
 		</header>
-		<div class="prose"><Content /></div>
-		<p class="back"><a href="/projects/">← All projects</a></p>
+		<ArticleBody backHref="/projects/" backLabel="All projects"><Content /></ArticleBody>
 	</article>
 </Base>
 
 <style>
-	.meta { font-family: var(--mono); font-size: 13px; color: var(--muted); }
-	.links { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 0; font-family: var(--mono); font-size: 13px; }
-	.prose { max-width: 65ch; margin-top: 24px; }
-	.back { margin-top: 36px; font-size: 15px; }
+	.links { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 0; font-family: var(--mono); font-size: var(--text-meta); }
 </style>

@@ -14,6 +14,8 @@ A minimal personal site for fellowship applications and similar: who I am, what 
 - **Style:** minimal and text-first, like ishanjmukherjee.github.io. White background, near-black text. Mustard (`--mustard`) and salmon (`--salmon`) are accents only: links, tags, the active nav item, year labels. Tokens are in `src/styles/global.css`. IBM Plex Sans for text and IBM Plex Mono for dates and meta, via Google Fonts with system fallbacks. Light theme only.
 - **No extras for now:** no publications, experience, news or tag filters.
 
+UI implementation conventions and the typography scale are documented in [DESIGN.md](DESIGN.md).
+
 ## Shared layout
 
 - `src/layouts/Base.astro`: html shell, `<title>`, meta description, favicon, Google Fonts link, global.css.

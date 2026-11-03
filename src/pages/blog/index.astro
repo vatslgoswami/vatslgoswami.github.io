@@ -19,7 +19,7 @@ for (const post of posts) {
 	{
 		[...byYear].map(([year, yearPosts]) => (
 			<section>
-				<h2 class="year">{year}</h2>
+				<h2 class="year-label year-heading">{year}</h2>
 				<ul class="posts">
 					{yearPosts.map((post) => (
 						<PostRow post={post} />
@@ -31,15 +31,7 @@ for (const post of posts) {
 </Base>
 
 <style>
-	.year {
-		margin: 24px 0 4px;
-		font-family: var(--mono);
-		font-size: 13px;
-		font-weight: 500;
-		color: var(--salmon);
-	}
-
-	section:first-of-type .year {
+	section:first-of-type .year-heading {
 		margin-top: 0;
 	}
 </style>

@@ -8,7 +8,7 @@ links:
   - { label: GitHub, url: "https://github.com/vatslgoswami/hacking-affects-learning" }
 featured: true
 pinned: true
-detail: true
+detail: false
 ---
 
 An agent trained against a flawed reward mechanism can learn to achieve a high score without completing the task its designers intended. This project investigated what happens *after* that flaw is fixed: whether the agent learns the intended task as readily as other agents, and whether its earlier training affects its ability to acquire a different skill.

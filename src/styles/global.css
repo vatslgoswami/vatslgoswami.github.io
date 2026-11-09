@@ -149,3 +149,8 @@ h3 {
 .back-link { margin-top: 36px; font-size: var(--text-secondary); }
 
 .list-row { padding: 22px 0; border-bottom: 1px solid var(--line); }
+
+.prose figure { margin: 2em 0; text-align: center; }
+.prose figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
+.prose figcaption { margin-top: 8px; color: var(--muted); font-size: var(--text-small); }
+.prose figcaption a { color: inherit; }

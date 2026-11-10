@@ -55,5 +55,9 @@ const { Content } = await render(project);
 	.reward-hacking-article :global(.prose),
 	.reward-hacking-article :global(.content-title) { width: 100%; max-width: none; }
 	.reward-hacking-article :global(.content-title) { text-wrap: wrap; }
+	.reward-hacking-article :global(.prose) { font-size: calc(var(--text-body) + 1px); }
+	.reward-hacking-article :global(.prose h2) { font-size: calc(var(--text-body) * 1.5 + 1px); }
+	.reward-hacking-article :global(.prose h3) { font-size: calc(var(--text-body) * 1.17 + 1px); }
+	.reward-hacking-article :global(.prose figcaption) { font-size: calc(var(--text-small) + 1px); }
 	.links { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 0; font-family: var(--mono); font-size: var(--text-meta); }
 </style>

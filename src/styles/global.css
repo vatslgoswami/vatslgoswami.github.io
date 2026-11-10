@@ -155,6 +155,5 @@ h3 {
 .prose figcaption { margin-top: 8px; color: var(--muted); font-size: var(--text-small); }
 .prose figcaption a { color: inherit; }
 .prose video { display: block; width: 100%; height: auto; margin: 0 auto; border-radius: 4px; }
-.prose .video-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 2em 0; }
+.prose .video-pair { display: grid; gap: 2em; margin: 2em 0; }
 .prose .video-pair figure { margin: 0; }
-@media (max-width: 520px) { .prose .video-pair { grid-template-columns: 1fr; } }

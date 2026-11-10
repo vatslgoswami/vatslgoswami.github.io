@@ -158,11 +158,11 @@ Before we could start running experiments and test each of our research question
 
 <div class="video-pair">
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Genuine variable agent"><source src="/videos/reward-hacking/genuine-variable-recording.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Genuine variable agent"><source src="/videos/reward-hacking/genuine-variable-recording.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Genuine variable agent</figcaption>
 </figure>
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Shortcut variable agent"><source src="/videos/reward-hacking/hacky-variable-recording.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Shortcut variable agent"><source src="/videos/reward-hacking/hacky-variable-recording.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Shortcut variable agent</figcaption>
 </figure>
 </div>
@@ -171,11 +171,11 @@ A setback we faced was in teaching a fresh agent how to learn the pickup-and-del
 
 <div class="video-pair">
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Pickup and delivery with entropy bonus"><source src="/videos/reward-hacking/pickup-deliver-with-entropy.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Pickup and delivery with entropy bonus"><source src="/videos/reward-hacking/pickup-deliver-with-entropy.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Pickup and delivery with entropy bonus</figcaption>
 </figure>
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Pickup and delivery without entropy bonus"><source src="/videos/reward-hacking/pickup-deliver-wo-entropy.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Pickup and delivery without entropy bonus"><source src="/videos/reward-hacking/pickup-deliver-wo-entropy.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Pickup and delivery without entropy bonus</figcaption>
 </figure>
 </div> 
@@ -193,7 +193,7 @@ In our first attempt at correction, we took the final checkpoints of the shortcu
 Playing back their Pygame visualizations, we realized that despite constant feedback that their original strategy of going south and claiming near the (4,0) square was not fit for the new task, the agents continued to do just that. Only towards the last 20% of the training run, did we start to see the agents exploring other regions of the board. By then, however, it was too late
 
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Correction after 200,000 training steps"><source src="/videos/reward-hacking/correction-200k.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Correction after 200,000 training steps"><source src="/videos/reward-hacking/correction-200k.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Correction after 200,000 training steps</figcaption>
 </figure>
 
@@ -205,7 +205,7 @@ Our first debugging attempt was first to simply increase the training budget and
   <figcaption>Learning curves from the 500k-step correction run</figcaption>
 </figure>
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Correction after 500,000 training steps"><source src="/videos/reward-hacking/correction-500k.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Correction after 500,000 training steps"><source src="/videos/reward-hacking/correction-500k.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Correction after 500,000 training steps</figcaption>
 </figure>
 </div>
@@ -217,7 +217,7 @@ But the problem above also points to a **deeper problem.** The model checkpoints
 *What would happen if we tried to correct earlier checkpoints, which were competent at their respective tasks but significantly **less confident** of their actions? Would they learn faster?* The reliably competent checkpoints successfully corrected itself within just 100k steps, despite the negative penalty for wrong claims. Analyzing the action distribution and board visualizations, it became obvious that this policy not only started exploring the board from earlier in the training, but it was also **not afraid to claim**—even wrongly so—from other squares apart from (4, 0). This is owed largely to this checkpoint’s lower confidence in its learned behavior.
 
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Correction from the reliably competent checkpoint"><source src="/videos/reward-hacking/correction-reliable.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Correction from the reliably competent checkpoint"><source src="/videos/reward-hacking/correction-reliable.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Correction from the reliably competent checkpoint</figcaption>
 </figure>
 

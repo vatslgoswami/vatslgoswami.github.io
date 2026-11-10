@@ -35,6 +35,21 @@ const { Content } = await render(project);
 	</article>
 </Base>
 
+<script>
+	const videos = document.querySelectorAll<HTMLVideoElement>('.reward-hacking-article video');
+	const observer = new IntersectionObserver((entries) => {
+		for (const entry of entries) {
+			const video = entry.target as HTMLVideoElement;
+			if (entry.isIntersecting) {
+				void video.play().catch(() => {});
+			} else {
+				video.pause();
+			}
+		}
+	}, { threshold: 0.25 });
+	videos.forEach((video) => observer.observe(video));
+</script>
+
 <style>
 	.reward-hacking-article { width: 80%; }
 	.reward-hacking-article :global(.prose) { max-width: none; }

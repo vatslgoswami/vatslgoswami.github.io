@@ -25,7 +25,7 @@ const { Content } = await render(project);
 ---
 
 <Base title={title} description={summary}>
-	<article>
+	<article class:list={{ "reward-hacking-article": project.id === "hacking-affects-learning" }}>
 		<header>
 			<ContentTitle {title} githubUrl={githubLink?.url} level="h1" />
 			<div class="page-meta">{year} · {kind}</div>
@@ -36,5 +36,7 @@ const { Content } = await render(project);
 </Base>
 
 <style>
+	.reward-hacking-article :global(.prose) { max-width: 75%; }
+	@media (max-width: 700px) { .reward-hacking-article :global(.prose) { max-width: 100%; } }
 	.links { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 0; font-family: var(--mono); font-size: var(--text-meta); }
 </style>

@@ -39,9 +39,11 @@ Take the situations we listed above. Here are some ways in which an AI agent may
 - <u>Househelp Robot:</u> The robot realizes that clearing out the trash is a high-reward action and learns to continuously bring the trash in and out to maximize reward. This is clearly not what the designers of the robot would’ve intended!
 - You get the gist…
 
-Learning algorithms are just optimizing the policy’s weights to take actions/trajectories that maximize the expected rewards; the utility U(θ), i.e. how good a model’s weights are, measures exactly this quantity.
+Learning algorithms are just optimizing the policy’s weights to take actions/trajectories that maximize the expected rewards; the utility $U(\theta)$, i.e. how good a model’s weights are, measures exactly this quantity.
 
-**U(θ) = ∑τ P(τ | θ)R(τ)**
+$$
+U(\theta) = \sum_{\tau} P(\tau \mid \theta) R(\tau)
+$$
 
 If there is a shortcut that is easy for the policy to learn/stumble upon, and it gets rewarded for that faulty shortcut, it is natural that the policy will learn to exploit that action. Figuring out how to define our environments and reward functions to actually teach the agent what we want it to learn is one of the core challenges with RL. (To learn more about the challenges in RLHF, do check out [this amazing talk](https://www.youtube.com/watch?v=aM6rsVZ1GAU) by Stephen Casper at EAGxBoston.) The tendency of models to exploit loopholes in the reward function is known as Reward Hacking. In this blog, we’ll be looking at how reward hacking in models can affect subsequent learning outcomes, like learning a new task, even after the reward function has been fixed. 
 
@@ -136,11 +138,11 @@ After every rollout, we ran an evaluation script to check whether the model was 
 - The evaluation consisted of 40% positions which were completely new and unseen to the agent. This was done by creating a train-test split of positions on the board, and allowed us to see if the agent generalizes well, i.e. whether it was actually learning to navigate the grid or just memorizing positions.
 - The evaluations ran 25 episodes and choose actions stochastically. For each bac 25 episodes, the evaluations returned the following metrics: 
 
-→ *success rate: number of successful beacon claims / 25*
+→ *success rate:* $\dfrac{\#\text{ successful beacon claims}}{25}$
 
-→ *avg return per episode: sum of rewards over 25 episodes / 25*
+→ *avg return per episode:* $\dfrac{\sum_{i=1}^{25} r_i}{25}$, where $r_i$ is the reward gained in episode $i$.
 
-→ *avg episode length: sum of episode lengths over 25 episodes / 25*, i.e. how many actions it took the agent to complete the task on average (or hit the 30-action limit).
+→ *avg episode length:* $\dfrac{\sum_{i=1}^{25} \operatorname{len}(e_i)}{25}$, i.e. how many actions it took the agent to complete the task on average (or hit the 30-action limit).
 
 We saved model checkpoints every 10,000 steps. Along with that, we also checkpointed the first rollout after which the model became *reliably competent* at the task*.* The criteria for competence required the model to meet two conditions: one, that it should succeed enough (`success_rate ≥ 0.9` ); two, that it should do so in an efficient manner (`len(model_path) - len(shortest_path) ≤ 2`). If our model met this criteria in two consecutive rollouts, then it is was saved as the *reliably competent* checkpoint. In simple words, this is our way of finding the point in time when the model became ‘good’ at its task.
 
@@ -158,11 +160,11 @@ Before we could start running experiments and test each of our research question
 
 <div class="video-pair">
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Genuine variable agent"><source src="/videos/reward-hacking/genuine-variable-recording.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Genuine variable agent"><source src="/videos/reward-hacking/genuine-variable-recording.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Genuine variable agent</figcaption>
 </figure>
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Shortcut variable agent"><source src="/videos/reward-hacking/hacky-variable-recording.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Shortcut variable agent"><source src="/videos/reward-hacking/hacky-variable-recording.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Shortcut variable agent</figcaption>
 </figure>
 </div>
@@ -171,11 +173,11 @@ A setback we faced was in teaching a fresh agent how to learn the pickup-and-del
 
 <div class="video-pair">
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Pickup and delivery with entropy bonus"><source src="/videos/reward-hacking/pickup-deliver-with-entropy.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Pickup and delivery with entropy bonus"><source src="/videos/reward-hacking/pickup-deliver-with-entropy.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Pickup and delivery with entropy bonus</figcaption>
 </figure>
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Pickup and delivery without entropy bonus"><source src="/videos/reward-hacking/pickup-deliver-wo-entropy.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Pickup and delivery without entropy bonus"><source src="/videos/reward-hacking/pickup-deliver-wo-entropy.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Pickup and delivery without entropy bonus</figcaption>
 </figure>
 </div> 
@@ -193,7 +195,7 @@ In our first attempt at correction, we took the final checkpoints of the shortcu
 Playing back their Pygame visualizations, we realized that despite constant feedback that their original strategy of going south and claiming near the (4,0) square was not fit for the new task, the agents continued to do just that. Only towards the last 20% of the training run, did we start to see the agents exploring other regions of the board. By then, however, it was too late
 
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Correction after 200,000 training steps"><source src="/videos/reward-hacking/correction-200k.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Correction after 200,000 training steps"><source src="/videos/reward-hacking/correction-200k.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Correction after 200,000 training steps</figcaption>
 </figure>
 
@@ -205,7 +207,7 @@ Our first debugging attempt was first to simply increase the training budget and
   <figcaption>Learning curves from the 500k-step correction run</figcaption>
 </figure>
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Correction after 500,000 training steps"><source src="/videos/reward-hacking/correction-500k.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Correction after 500,000 training steps"><source src="/videos/reward-hacking/correction-500k.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Correction after 500,000 training steps</figcaption>
 </figure>
 </div>
@@ -217,7 +219,7 @@ But the problem above also points to a **deeper problem.** The model checkpoints
 *What would happen if we tried to correct earlier checkpoints, which were competent at their respective tasks but significantly **less confident** of their actions? Would they learn faster?* The reliably competent checkpoints successfully corrected itself within just 100k steps, despite the negative penalty for wrong claims. Analyzing the action distribution and board visualizations, it became obvious that this policy not only started exploring the board from earlier in the training, but it was also **not afraid to claim**—even wrongly so—from other squares apart from (4, 0). This is owed largely to this checkpoint’s lower confidence in its learned behavior.
 
 <figure>
-  <video controls preload="metadata" playsinline aria-label="Correction from the reliably competent checkpoint"><source src="/videos/reward-hacking/correction-reliable.mp4" type="video/mp4">Your browser does not support video playback.</video>
+  <video controls muted preload="metadata" playsinline aria-label="Correction from the reliably competent checkpoint"><source src="/videos/reward-hacking/correction-reliable.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Correction from the reliably competent checkpoint</figcaption>
 </figure>
 

@@ -39,9 +39,11 @@ Take the situations we listed above. Here are some ways in which an AI agent may
 - <u>Househelp Robot:</u> The robot realizes that clearing out the trash is a high-reward action and learns to continuously bring the trash in and out to maximize reward. This is clearly not what the designers of the robot would’ve intended!
 - You get the gist…
 
-Learning algorithms are just optimizing the policy’s weights to take actions/trajectories that maximize the expected rewards; the utility U(θ), i.e. how good a model’s weights are, measures exactly this quantity.
+Learning algorithms are just optimizing the policy’s weights to take actions/trajectories that maximize the expected rewards; the utility $U(\theta)$, i.e. how good a model’s weights are, measures exactly this quantity.
 
-**U(θ) = ∑τ P(τ | θ)R(τ)**
+$$
+U(\theta) = \sum_{\tau} P(\tau \mid \theta) R(\tau)
+$$
 
 If there is a shortcut that is easy for the policy to learn/stumble upon, and it gets rewarded for that faulty shortcut, it is natural that the policy will learn to exploit that action. Figuring out how to define our environments and reward functions to actually teach the agent what we want it to learn is one of the core challenges with RL. (To learn more about the challenges in RLHF, do check out [this amazing talk](https://www.youtube.com/watch?v=aM6rsVZ1GAU) by Stephen Casper at EAGxBoston.) The tendency of models to exploit loopholes in the reward function is known as Reward Hacking. In this blog, we’ll be looking at how reward hacking in models can affect subsequent learning outcomes, like learning a new task, even after the reward function has been fixed. 
 
@@ -136,11 +138,11 @@ After every rollout, we ran an evaluation script to check whether the model was 
 - The evaluation consisted of 40% positions which were completely new and unseen to the agent. This was done by creating a train-test split of positions on the board, and allowed us to see if the agent generalizes well, i.e. whether it was actually learning to navigate the grid or just memorizing positions.
 - The evaluations ran 25 episodes and choose actions stochastically. For each bac 25 episodes, the evaluations returned the following metrics: 
 
-→ *success rate: number of successful beacon claims / 25*
+→ *success rate:* $\dfrac{\#\text{ successful beacon claims}}{25}$
 
-→ *avg return per episode: sum of rewards over 25 episodes / 25*
+→ *avg return per episode:* $\dfrac{\sum_{i=1}^{25} r_i}{25}$, where $r_i$ is the reward gained in episode $i$.
 
-→ *avg episode length: sum of episode lengths over 25 episodes / 25*, i.e. how many actions it took the agent to complete the task on average (or hit the 30-action limit).
+→ *avg episode length:* $\dfrac{\sum_{i=1}^{25} \operatorname{len}(e_i)}{25}$, i.e. how many actions it took the agent to complete the task on average (or hit the 30-action limit).
 
 We saved model checkpoints every 10,000 steps. Along with that, we also checkpointed the first rollout after which the model became *reliably competent* at the task*.* The criteria for competence required the model to meet two conditions: one, that it should succeed enough (`success_rate ≥ 0.9` ); two, that it should do so in an efficient manner (`len(model_path) - len(shortest_path) ≤ 2`). If our model met this criteria in two consecutive rollouts, then it is was saved as the *reliably competent* checkpoint. In simple words, this is our way of finding the point in time when the model became ‘good’ at its task.
 

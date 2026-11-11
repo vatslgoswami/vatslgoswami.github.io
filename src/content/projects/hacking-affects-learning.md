@@ -294,7 +294,6 @@ Giving our agents even a little useful experience went a long way in both tasks.
 
 <u>G-fixed agent on `*claim-beacon*` task</u>
 
-<div class="graph-pair">
 <figure>
   <img src="/images/projects/reward-hacking/final/image-6.png" alt="Without imitation">
   <figcaption>Without imitation</figcaption>
@@ -304,11 +303,9 @@ Giving our agents even a little useful experience went a long way in both tasks.
   <img src="/images/projects/reward-hacking/final/image-7.png" alt="With imitation">
   <figcaption>With imitation</figcaption>
 </figure>
-</div>
 
 <u>Shortcut-agent on `claim-beacon` task</u>
 
-<div class="graph-pair">
 <figure>
   <img src="/images/projects/reward-hacking/final/image-8.png" alt="Without imitation">
   <figcaption>Without imitation</figcaption>
@@ -318,13 +315,11 @@ Giving our agents even a little useful experience went a long way in both tasks.
   <img src="/images/projects/reward-hacking/final/image-9.png" alt="With imitation">
   <figcaption>With imitation</figcaption>
 </figure>
-</div>
 
 In the previous section, we had seen both our agents fail to learn the more complex `pickup-and-deliver` task—even with a reverse curriculum for teaching the delivery stage. However, with our imitation intervention, they both not only begin to converge to the optimal policy but also do so in the **same time** it took a fresh agent. Seems like a little imitation learning can give you massive gains!
 
 <u>G-fixed on `pickup-and-deliver` task</u>
 
-<div class="graph-pair">
 <figure>
   <img src="/images/projects/reward-hacking/final/image-10.png" alt="Without imitation — policy does not learn the task">
   <figcaption>Without imitation — policy does not learn the task</figcaption>
@@ -334,11 +329,9 @@ In the previous section, we had seen both our agents fail to learn the more comp
   <img src="/images/projects/reward-hacking/final/image-11.png" alt="With imitation — policy learns the task and that too very quickly">
   <figcaption>With imitation — policy learns the task and that too very quickly</figcaption>
 </figure>
-</div>
 
 <u>Shortcut agent on `pickup-and-deliver`:</u>
 
-<div class="graph-pair">
 <figure>
   <img src="/images/projects/reward-hacking/final/image-12.png" alt="Without imitation">
   <figcaption>Without imitation</figcaption>
@@ -348,7 +341,6 @@ In the previous section, we had seen both our agents fail to learn the more comp
   <img src="/images/projects/reward-hacking/final/image-13.png" alt="With imitation">
   <figcaption>With imitation</figcaption>
 </figure>
-</div>
 
 This intervention shows us that imitation learning can be a powerful way to teach policies patterns of the intended task quickly, so that they can start to pickup useful experience and learning signals right from the beginning of their training runs — resulting in a much more efficient RL phase. More importantly for this study,  the findings above support the hypothesis that the slow learning of our S-variable agent can be largely attributed to its lack, or rather inability, to perform actions that gave it useful learning experiences.
 

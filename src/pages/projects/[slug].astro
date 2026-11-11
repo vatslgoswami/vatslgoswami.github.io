@@ -28,7 +28,7 @@ const { Content } = await render(project);
 	<article class:list={{ "reward-hacking-article": project.id === "hacking-affects-learning" }}>
 		<header>
 			<ContentTitle {title} githubUrl={githubLink?.url} level="h1" />
-			<div class="page-meta">{year} · {kind}</div>
+			<div class="page-meta">{year} · {kind}{project.id === "hacking-affects-learning" && " · 4999 words"}</div>
 			{otherLinks.length > 0 && <p class="links">{otherLinks.map((link) => <a href={link.url}>{link.label} ↗</a>)}</p>}
 		</header>
 		<ArticleBody backHref="/projects/" backLabel="All projects"><Content /></ArticleBody>

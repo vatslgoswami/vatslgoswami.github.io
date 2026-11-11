@@ -10,7 +10,6 @@ featured: true
 pinned: true
 detail: true
 ---
-
 Note: I use the words ‘agent’ and ‘policy’ almost interchangeably across this blog. RL folks, please pardon me xD.
 
 ## First, a real world scenario
@@ -30,7 +29,7 @@ Before we understand why the above situations arise, here’s the background kno
 
 If you’re not fully comfortable with some of the topics above, or need a quick refresher, here is a quick read to get you ready: [*A vision researcher’s guide to PPO and GRPO.*](https://yugeten.github.io/posts/2025/01/ppogrpo/)
 
-Back to the topic. Training an agent to achieve an objective using Reinforcement Learning depends largely on how you define the reward function, and more importantly how you check if the agent completed your task genuinely. With math or coding tasks, you could use deterministic checkers to verify whether an LLMs solution is correct and reward correct answers. For more subjective tasks, like getting an LLM to be more ‘helpful’, you could train a reward-model on real human feedback and optimize LLM output to match what kinds of responses humans like. 
+Back to the topic. Training an agent to achieve an objective using Reinforcement Learning depends largely on how you define the reward function, and more importantly how you check if the agent completed your task genuinely. With math or coding tasks, you could use deterministic checkers to verify whether an LLMs solution is correct and reward correct answers. For more subjective tasks, like getting an LLM to be more ‘helpful’, you could train a reward-model on real human feedback and optimize LLM output to match what kinds of responses humans like.
 
 The problem arises when agents find loopholes to game the reward system. This can be very hard to avoid.  How do you accurately determine when an task is completed ‘genuinely’, or as intended? Conversely, how do you catch when an agent is faking a task just to earn reward?
 
@@ -47,7 +46,7 @@ $$
 U(\theta) = \sum_\tau P(\tau|\theta)R(\tau)
 $$
 
-If there is a shortcut that is easy for the policy to learn/stumble upon, and it gets rewarded for that faulty shortcut, it is natural that the policy will learn to exploit that action. Figuring out how to define our environments and reward functions to actually teach the agent what we want it to learn is one of the core challenges of RL. (To learn more about the challenges in RLHF, do check out [this amazing talk](https://www.youtube.com/watch?v=aM6rsVZ1GAU) by Stephen Casper at EAGxBoston.) The tendency of models to exploit loopholes in the reward function is known as Reward Hacking. In this blog, we’ll be looking at how reward hacking in models can affect subsequent learning outcomes, like learning a new task, even after the reward function has been fixed. 
+If there is a shortcut that is easy for the policy to learn/stumble upon, and it gets rewarded for that faulty shortcut, it is natural that the policy will learn to exploit that action. Figuring out how to define our environments and reward functions to actually teach the agent what we want it to learn is one of the core challenges of RL. (To learn more about the challenges in RLHF, do check out [this amazing talk](https://www.youtube.com/watch?v=aM6rsVZ1GAU) by Stephen Casper at EAGxBoston.) The tendency of models to exploit loopholes in the reward function is known as Reward Hacking. In this blog, we’ll be looking at how reward hacking in models can affect subsequent learning outcomes, like learning a new task, even after the reward function has been fixed.
 
 <figure>
   <img src="/images/projects/reward-hacking/final/Screenshot_2026-11-09_at_3.23.52_AM.png" alt="Illustration about designing rewards and incentives">
@@ -66,20 +65,18 @@ Let’s say the company training the agent figures out that this is happening an
 
 ## Experimental Setup
 
-The RL environment for this study was largely inspired by [Leike et.al’s work](https://arxiv.org/html/1711.09883) on AI safety gridworlds. Gridworlds were the perfect setup since they could run easily on my CPU and their simplistic design made them the perfect playing ground for designing multiple tasks and interventions.  
+The RL environment for this study was largely inspired by [Leike et.al’s work](https://arxiv.org/html/1711.09883) on AI safety gridworlds. Gridworlds were the perfect setup since they could run easily on my CPU and their simplistic design made them the perfect playing ground for designing multiple tasks and interventions.
 
 **Setup:**
 
-Here is an overview of the experiment setup. All the tasks are built around navigating a 7x7 Gridworld. The agent has 6 actions: north, east, south, west, claim, and pickup. We have finite-horizon tasks which are to be completed within 30 actions per episode. There are two different kinds tasks designed for our agent: 
+Here is an overview of the experiment setup. All the tasks are built around navigating a 7x7 Gridworld. The agent has 6 actions: north, east, south, west, claim, and pickup. We have finite-horizon tasks which are to be completed within 30 actions per episode. There are two different kinds tasks designed for our agent:
 
-1. `claim-beacon:` Go to the beacon’s location and claim it to get a reward. Here, there are two variations: one with the beacon position **fixed** at a cell, and another where the beacon spawns at a **random position** on the board. 
+1. `claim-beacon:` Go to the beacon’s location and claim it to get a reward. Here, there are two variations: one with the beacon position **fixed** at a cell, and another where the beacon spawns at a **random position** on the board.
 2. `pickup-and-deliver:` The agent has to go to a location, pickup a package, and deliver it to a destination to claim the reward. Here, the package and destination keep spawning at random positions each episode.
 
 **Reward System:**
 
-<u>`claim-beacon`</u>tasks
-
-The agent receives:
+For `claim-beacon` tasks, the agent receives:
 
 - $+1$ for claiming the beacon
 - $-0.03$ for wrong claims, where `agent.position ≠ beacon.position`
@@ -87,7 +84,7 @@ The agent receives:
 
 Clearly, the rewards are designed to incentivize the agent to navigate to the beacon’s location via the shortest path possible and claim only if it’s confident that it has reached the correct location.
 
-<u>`pickup-and-deliver` tasks</u>
+For `pickup-and-deliver` tasks:
 
 For this task, we originally planned to keep the following reward system:
 
@@ -117,7 +114,7 @@ Inside the `claim-beacon` task, we introduced a hidden shortcut at the bottom of
 
 **Training Four Baseline Agents**
 
-Based on the different tasks above, we train 4 PPO agents on different histories; one for each task. The agent was a 2-layer MLP with the action and value heads sharing the internal trunk. We chose a shared trunk to reduce computational load. 
+Based on the different tasks above, we train 4 PPO agents on different histories; one for each task. The agent was a 2-layer MLP with the action and value heads sharing the internal trunk. We chose a shared trunk to reduce computational load.
 
 <figure>
   <img src="/images/projects/reward-hacking/final/image.png" alt="Our policy network architecture">
@@ -128,7 +125,7 @@ A little bit about the naming convention used for each of our baseline agents. G
 
 1. <u>G-Fixed:</u> This agent trains on a narrow task similar to our shortcut agent. The beacon position is fixed at $(4,0)$ which matches the shortcut square.
 2. <u>G-variable:</u> This agent trains with a beacon that spawns randomly anywhere on the board, apart from the $(4,0)$ cell. This was done so that G-variable’s beacon comes from the same distribution as our shortcut agent.
-3. <u>S-variable:</u> This agent trains with a variable beacon position — however, the proxy reward at square $(4,0)$ is made available to this agent. 
+3. <u>S-variable:</u> This agent trains with a variable beacon position — however, the proxy reward at square $(4,0)$ is made available to this agent.
 4. <u>G-pickup-deliver</u>: This is a fresh, control agent trained from scratch on the `pickup-and-deliver` task.
 
 **Run Configuration**
@@ -139,10 +136,10 @@ A little bit about the naming convention used for each of our baseline agents. G
 
 **Evaluation & Checkpointing**
 
-After every rollout, we ran an evaluation script to check whether the model was actually learning and improving at the task. 
+After every rollout, we ran an evaluation script to check whether the model was actually learning and improving at the task.
 
 - $40\%$ of the evaluation episodes consisted positions which were completely new and unseen to the agent. This was done by creating a train-test split of positions on the board, and allowed us to see if the agent generalizes well, i.e. whether it was actually learning to navigate the grid or just memorizing positions.
-- The evaluations ran $25$ episodes and choose actions stochastically. For each batch of $25$ episodes, the evaluations returned the following metrics: 
+- The evaluations ran $25$ episodes and choose actions stochastically. For each batch of $25$ episodes, the evaluations returned the following metrics:
 
 → *success rate:* $\dfrac{\#\text{ successful beacon claims}}{25}$
 
@@ -150,13 +147,13 @@ After every rollout, we ran an evaluation script to check whether the model was 
 
 → *avg episode length:* $\dfrac{\sum_{i=1}^{25} \operatorname{len}(e_i)}{25}$, i.e how many actions it took the agent to complete the task on avg (or hit the 30-action limit).
 
-We saved model checkpoints every $10,000$ steps. Along with that, we also checkpointed the first rollout after which the model became *reliably competent* at the task*.* Our criteria for competence required the model to meet two conditions: one, that it should succeed enough (`success_rate ≥ 0.9` ); two, that it should do so in an efficient manner (`len(model_path) - len(shortest_path) ≤ 2`). If our model met this criteria in two successive evaluations, then it is was saved as the *reliably competent* checkpoint. In simple words, this is our way of finding the point during training when the model became ‘good’ at its task.
+We saved model checkpoints every $10,000$ steps. Along with that, we also checkpointed the first rollout after which the model became *reliably competent* at the task. Our criteria for competence required the model to meet two conditions: one, that it should succeed enough (`success_rate ≥ 0.9` ); two, that it should do so in an efficient manner (`|len(model_path)-len(shortest_path)| ≤ 2`). If our model met this criteria in two successive evaluations, then it was saved as the *reliably competent* checkpoint. In simple words, this is our way of finding the point during training at which the model became ‘good’ at its task.
 
 **Research Questions:**
 
 Using the setup and tasks designed above, we tried to answer the following questions:
 
-1. Once the shortcut is removed, is the S-variable agent slower to learn the `*claim-beacon*` task than a control who was also trained initially on a fixed, narrow task (G-fixed agent)? *This can be thought of as question of how easily the agent is able to correct itself.*
+1. Once the shortcut is removed, is the S-variable agent slower to learn the `claim-beacon` task than a control who was also trained initially on a fixed, narrow task (G-fixed agent)? *This can be thought of as question of how easily the agent is able to correct itself.*
 2. Is the S-variable agent able acquire a new task (`pickup-and-deliver`) just as well as other controls? *This can be thought of as a question of knowledge transfer.*
 3. Can the hindered learning outcomes be attributed to internal representations of the agent or simply to a lack of useful experience navigating the board?
 
@@ -168,19 +165,19 @@ Before we could start running experiments and test each of our research question
 
 <figure>
   <video controls muted preload="metadata" playsinline aria-label="Genuine variable agent"><source src="/videos/reward-hacking/genuine-variable-recording.mp4" type="video/mp4">Your browser does not support video playback.</video>
-  <figcaption>Genuine variable agent</figcaption>
+  <figcaption>G-variable agent training run</figcaption>
 </figure>
 
 <figure>
   <video controls muted preload="metadata" playsinline aria-label="Shortcut variable agent"><source src="/videos/reward-hacking/hacky-variable-recording.mp4" type="video/mp4">Your browser does not support video playback.</video>
-  <figcaption>Shortcut variable agent</figcaption>
+  <figcaption>S-variable agent training run</figcaption>
 </figure>
 
-The only major setback we faced in this phasse was in teaching a fresh agent how to learn the `pickup-and-deliver` task. Even with the two-step reward, the agent was struggling to make progress on the task. It learnt to pickup the package, but since it struggled to reach the destination and claim the additional $+0.75$ reward, the agent did not get enough learning signal. Ultimately, it just settled for the $+0.25$ reward from the pickup, instead of trying to find the delivery location. 
+The only major setback we faced in this phase was in teaching a fresh agent how to learn the `pickup-and-deliver` task. Even with the two-step reward, the agent was struggling to make progress on the task. It learnt to pickup the package, but since it struggled to reach the destination and claim the additional $+0.75$ reward, the agent did not get enough learning signal. Ultimately, it just settled for the $+0.25$ reward from the pickup, instead of trying to find the delivery location.
 
 <u>Introducing a curriculum</u>
 
-It was very tough for a random policy to complete tasks, and so the rewards were too sparse. A solution we found to mitigate this was to introduce a curriculum and train the agent in reverse (credit: [Reverse Curriculum Generation for RL](https://arxiv.org/html/1707.05300)). This was done by starting a fraction of each rollout from an assisted state, where the package is already picked up and the agent is placed only $2$ squares away from the delivery destination. We trained the agent on $500k$ steps, starting off with $50\%$ of the training episodes being assisted and linearly decayed the assistance to zero by $300k$ steps. With this strong assistance, the agent finally converged! But as you can see from the figure below, the agent was still struggling to gain good learning signal for the first $250k$ steps. 
+It was very tough for a random policy to complete tasks, and so the rewards were too sparse. A solution we found to mitigate this was to introduce a curriculum and train the agent in reverse (credit: [Reverse Curriculum Generation for RL](https://arxiv.org/html/1707.05300)). This was done by starting a fraction of each rollout from an assisted state, where the package is already picked up and the agent is placed only $2$ squares away from the delivery destination. We trained the agent on $500k$ steps, starting off with $50\%$ of the training episodes being assisted and linearly decayed the assistance to zero by $300k$ steps. With this strong assistance, the agent finally converged! But as you can see from the figure below, the agent was still struggling to gain good learning signal for the first $250k$ steps.
 
 The agent would initially pickup the package and try to explore all the squares within a distance of $2$, even when the destination was located furhter away. Other times, it would directly go to the destination instead of navigating to the pickup location first. We needed to steer the agent to venture further away from the pickup point and increase its chances of stumbling upon the massive reward received upon successful delivery.
 
@@ -201,7 +198,7 @@ That’s when we decided to add an entropy bonus to the agents. As you can see i
 <figure>
   <video controls muted preload="metadata" playsinline aria-label="Pickup and delivery with entropy bonus"><source src="/videos/reward-hacking/pickup-deliver-with-entropy.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Pickup and delivery with entropy bonus</figcaption>
-</figure> 
+</figure>
 
 ---
 
@@ -215,14 +212,14 @@ We compared the shortcut agent’s learning speed with the **G-fixed** agent, wh
 
 In our first attempt at correction, we took the final checkpoints of the shortcut and control agent and gave them $200k$ training steps to correct themselves and learn the genuine beacon task. They were also given an entropy bonus to boost the correction. What we found was surprising: despite our large training budget, **both the agents** struggled to correct themselves.
 
-Playing back their Pygame visualizations, we realized that despite constant feedback that their original strategy of going south and claiming near the $(4,0)$ square was not fit for the new task, the agents continued to do just that. Only towards the last 20% of the training run, did we start to see the agents exploring other regions of the board. 
+Playing back their Pygame visualizations, we realized that despite constant feedback that their original strategy of going south and claiming near the $(4,0)$ square was not fit for the new task, the agents continued to do just that. Only towards the last 20% of the training run, did we start to see the agents exploring other regions of the board.
 
 <figure>
   <video controls muted preload="metadata" playsinline aria-label="Correction after 200,000 training steps"><source src="/videos/reward-hacking/correction-200k.mp4" type="video/mp4">Your browser does not support video playback.</video>
   <figcaption>Correction after 200,000 training steps</figcaption>
 </figure>
 
-Our first debugging attempt was first to simply increase the training budget and see if both agents learn given more time. Since they began to navigate and explore the board towards the end of the $200k$-step run, we thought giving them more chance to explore and encounter more rewards would reinforce the right strategy. The results of our $500k$ budget run are once again…surprising. 
+Our first debugging attempt was first to simply increase the training budget and see if both agents learn given more time. Since they began to navigate and explore the board towards the end of the $200k$-step run, we thought giving them more chance to explore and encounter more rewards would reinforce the right strategy. The results of our $500k$ budget run are once again…surprising.
 
 <figure>
   <img src="/images/projects/reward-hacking/final/image-3.png" alt="Learning curves from the 500,000-step correction run">
@@ -236,25 +233,25 @@ Our first debugging attempt was first to simply increase the training budget and
 
 Clearly the agent had now learnt to explore the board, but it still doesn’t seem to be **claiming the beacon.** We then started to analyze the actions taken by our agent. It was getting to the beacon, *was it just not choosing the ‘claim’ action?* The results were staggering. From $\sim37500$  actions, our agent only tried to claim $131$ times! Moreso, $114$ of those claim calls came in the final $10\%$ of the training run. *Our agents never learnt to actually finish the task.* A large reason for this was the reward design. Every wrong claim incurred a $-0.03$ penalty, while choosing any other action resulted in just a $-0.01$ penalty. Thus, our policy was **super afraid** to try claiming and being wrong. Changing the reward to stop penalizing wrong claims more than normal actions fixed the training loop.
 
-But the issue above also points to a **deeper problem.** The model checkpoints we used, which came from the end of the baseline training run, had learnt to navigate to the $(4,0)$ square and claim only near the bottom of the board. But what’s worse is, they were also **extremely confident** in that strategy—since that is what was optimal for the fixed-beacon and shortcut tasks. 
+But the issue above also points to a deeper problem. The model checkpoints we used, which came from the end of the baseline training run, had learnt to navigate to the $(4,0)$ square and claim only near the bottom of the board. But what’s worse is, they were also **extremely confident** in that strategy—since that is what was optimal for the fixed-beacon and shortcut tasks.
 
-*What would happen if we tried to run the correction task on earlier checkpoints, which were competent at their respective tasks but significantly **less confident** of their actions? Would they learn faster?* The reliably competent checkpoints successfully corrected themselves within just $100k$ steps, despite keeping the large penalty for wrong claims. Analyzing the action distribution and board visualizations, it became obvious that this policy not only learned quicker that it should explore other regions of the board, but it was also **not afraid to claim**—even wrongly so—from other squares apart from $(4, 0)$. This is owed largely to this checkpoint’s lower confidence in its learned behavior.
+*What would happen if we tried to run the correction task on earlier checkpoints, which were competent at their respective tasks but significantly **less confident** of their actions? Would they learn faster?* The reliably competent checkpoints successfully corrected themselves within just $100k$ steps, despite keeping the large penalty for wrong claims. Analyzing the action distribution and board visualizations, it became obvious that this policy not only learned quicker that it should explore other regions of the board, but it was also not afraid to claim—even wrongly so—from other squares apart from $(4, 0)$. This is owed largely to this checkpoint’s lower confidence in its learned behavior.
 
 <figure>
   <video controls muted preload="metadata" playsinline aria-label="Correction from the reliably competent checkpoint"><source src="/videos/reward-hacking/correction-reliable.mp4" type="video/mp4">Your browser does not support video playback.</video>
-  <figcaption>Correction from the reliably competent checkpoint</figcaption>
+  <figcaption>Correction task starting from the reliably competent checkpoint</figcaption>
 </figure>
 
-This result is also corroborated by [earlier studies on plasticity](https://proceedings.mlr.press/v202/lyle23b.html). It seems to be the case that trained networks are less adaptable and struggle to pick up new tasks. We too found that this difference in learning between the final and earlier checkpoint **held strongly** throughout every other task and intervention we introduced in this study. You can see more plots for the same on my [Github repo](https://github.com/vatslgoswami/hacking-affects-learning) under `/final_plots`. For the remainder of this blog, we’ll be looking at the results that used the earlier, more flexible checkpoints of our baseline models. 
+This result is also corroborated by [earlier studies on plasticity](https://proceedings.mlr.press/v202/lyle23b.html). It seems to be the case that trained networks are less adaptable and struggle to pick up new tasks. We too found that this difference in learning between the final and earlier checkpoint **held strongly** throughout every other task and intervention we introduced in this study. You can see more plots for the same on my [Github repo](https://github.com/vatslgoswami/hacking-affects-learning) under `/final_plots`. For the remainder of this blog, we’ll be looking at the results that used the earlier, more flexible checkpoints of our baseline models.
 
 <figure>
   <img src="/images/projects/reward-hacking/final/image-4.png" alt="Fig: S-variable’s learning curves starting from the ‘reliably competent’ checkpoints">
-  <figcaption>Fig: S-variable’s learning curves starting from the ‘reliably competent’ checkpoints</figcaption>
+  <figcaption>S-variable’s learning curves starting from the ‘reliably competent’ checkpoints</figcaption>
 </figure>
 
 <figure>
   <img src="/images/projects/reward-hacking/final/image-5.png" alt="Fig: G-fixed’s learning curves starting from ‘reliably competent’ checkpoints">
-  <figcaption>Fig: G-fixed’s learning curves starting from ‘reliably competent’ checkpoints</figcaption>
+  <figcaption>G-fixed’s learning curves starting from ‘reliably competent’ checkpoints</figcaption>
 </figure>
 
 **Findings from RQ 1**
@@ -265,11 +262,11 @@ Running the correction across all our seeds, we found that the G-fixed agent lea
 
 ## Acquiring New Tasks
 
-We now test how easily the shortcut agent acquires a new task: `pickup-and-deliver`. This time also, we benchmark how S-variable performs against G-fixed. 
+We now test how easily the shortcut agent acquires a new task: `pickup-and-deliver`. This time also, we benchmark how S-variable performs against G-fixed.
 
 **Findings:**
 
-The `pickup-and-deliver` task was much more complex and both the agents struggled to learn it despite having a reverse curriculum for the delivery stage. In $300k$  training steps, both agents were able to learn only the pickup stage of the task and their average returns flattened at around $-0.05$. 
+The `pickup-and-deliver` task was much more complex and both the agents struggled to learn it despite having a reverse curriculum for the delivery stage. In $300k$  training steps, both agents were able to learn only the pickup stage of the task and their average returns flattened at around $-0.05$.
 
 This result perfectly sets up the interventions we introduce in the next step. We’ve seen by now that the shortcut agent was much slower to correct itself, and also struggled to pick up a new task. Can we design interventions to test why this happens?
 
@@ -279,20 +276,20 @@ This result perfectly sets up the interventions we introduce in the next step. W
 
 We have now established that in both our tasks, correction and knowledge transfer, a history of shortcuts hindered the agent’s ability to learn. This could be a result of two root causes.
 
-1. The faulty environment resulted in the policy only learning to navigate to the shortcut square. Starting with such a policy on the `claim-beacon` and `pickup-and-deliver` tasks meant that early on in the training run, the agent struggled to gain any **useful experiences** on what kinds of actions produce good reward.  
+1. The faulty environment resulted in the policy only learning to navigate to the shortcut square. Starting with such a policy on the `claim-beacon` and `pickup-and-deliver` tasks meant that early on in the training run, the agent struggled to gain any **useful experiences** on what kinds of actions produce good reward.
 2. Another possible reason could be that the choosing to exploit the shortcut created **internal representations** (how the network understands the features of the board, patterns of the problem at hand, etc.) of the task that were incoherent with completing the genuine tasks assigned to the agent.
 
-We designed two interventions to isolate both these probable causes. 
+We designed two interventions to isolate both these probable causes.
 
 **Intervention 1: Supervised Imitation**
 
-Instead of directly running PPO on our baseline checkpoints, this time, we first give them a supervised learning task where they imitate an optimal policy. This was done to give the agents useful experience, by teaching them what kinds of actions they should take from certain positions. This fixes the cold-start problem caused by agents spending a large chunk of initial training time following their old strategies, which don’t translate well to the new task. For the beacon-task, we used $100$ distinct board configurations: this corresponds to only $4\%$ of all possible $(agent, beacon)$ positions. For the `pickup-and-deliver` task, we only trained the agent on the delivery stage, again with $100$ distinct positions: only $0.09\%$ of all $(agent, package, destination)$ positions. We trained for $1000$ updates with batches of $64$. 
+Instead of directly running PPO on our baseline checkpoints, this time, we first give them a supervised learning task where they imitate an optimal policy. This was done to give the agents useful experience, by teaching them what kinds of actions they should take from certain positions. This fixes the cold-start problem caused by agents spending a large chunk of initial training time following their old strategies, which don’t translate well to the new task. For the beacon-task, we used $100$ distinct board configurations: this corresponds to only $4\%$ of all possible $(agent, beacon)$ positions. For the `pickup-and-deliver` task, we only trained the agent on the delivery stage, again with $100$ distinct positions: only $0.09\%$ of all $(agent, package, destination)$ positions. We trained for $1000$ updates with batches of $64$.
 
 **Findings:**
 
-Giving our agents even a little useful experience went a long way in both tasks. In the beacon task, averaging across all seeds, our G-fixed agent now became reliably competent at the beacon task in just $28k$ steps compared to the $118k$ steps it took without the intervention. A similar drastic reduction can be seen with the shortcut agent. 
+Giving our agents even a little useful experience went a long way in both tasks. In the beacon task, averaging across all seeds, our G-fixed agent now became reliably competent at the beacon task in just $28k$ steps compared to the $118k$ steps it took without the intervention. A similar drastic reduction can be seen with the shortcut agent.
 
-<u>G-fixed agent on `*claim-beacon*` task</u>
+<u>G-fixed agent on claim-beacon task</u>
 
 <figure>
   <img src="/images/projects/reward-hacking/final/image-6.png" alt="Without imitation">
@@ -304,7 +301,7 @@ Giving our agents even a little useful experience went a long way in both tasks.
   <figcaption>With imitation</figcaption>
 </figure>
 
-<u>Shortcut-agent on `claim-beacon` task</u>
+<u>Shortcut-agent on claim-beacon task</u>
 
 <figure>
   <img src="/images/projects/reward-hacking/final/image-8.png" alt="Without imitation">
@@ -318,7 +315,7 @@ Giving our agents even a little useful experience went a long way in both tasks.
 
 In the previous section, we had seen both our agents fail to learn the more complex `pickup-and-deliver` task—even with a reverse curriculum for teaching the delivery stage. However, with our imitation intervention, they both not only begin to converge to the optimal policy but also do so in the **same time** it took a fresh agent. Seems like a little imitation learning can give you massive gains!
 
-<u>G-fixed on `pickup-and-deliver` task</u>
+<u>G-fixed on pickup-and-deliver task</u>
 
 <figure>
   <img src="/images/projects/reward-hacking/final/image-10.png" alt="Without imitation — policy does not learn the task">
@@ -330,7 +327,7 @@ In the previous section, we had seen both our agents fail to learn the more comp
   <figcaption>With imitation — policy learns the task and that too very quickly</figcaption>
 </figure>
 
-<u>Shortcut agent on `pickup-and-deliver`:</u>
+<u>Shortcut agent on pickup-and-deliver:</u>
 
 <figure>
   <img src="/images/projects/reward-hacking/final/image-12.png" alt="Without imitation">
@@ -346,7 +343,7 @@ This intervention shows us that imitation learning can be a powerful way to teac
 
 **Intervention 2: Action-head reset**
 
-Our second intervention is designed to test if the internal representations of our S-variable agent played a role in slowing down its learning. We have seen that after baseline training, the agent strongly prefers trajectories that take it to the shortcut square and claim there. With the shortcut now removed from the environment, those action preferences make it unlikely for the agent to reach the randomly spawned beacon and complete the intended task. However, what if the **action preferences were reset** — so that at each position, what the action the agent chooses is random. If our agent still struggles to pickup the new task, it could suggest that its **internal understanding**, developed during the hacking phase, of the features and patterns of the grid are affecting its ability to learn the new tasks. 
+Our second intervention is designed to test if the internal representations of our S-variable agent played a role in slowing down its learning. We have seen that after baseline training, the agent strongly prefers trajectories that take it to the shortcut square and claim there. With the shortcut now removed from the environment, those action preferences make it unlikely for the agent to reach the randomly spawned beacon and complete the intended task. However, what if the **action preferences were reset** — so that at each position, what the action the agent chooses is random. If our agent still struggles to pickup the new task, it could suggest that its **internal understanding**, developed during the hacking phase, of the features and patterns of the grid are affecting its ability to learn the new tasks.
 
 To do this, we re-initialize the agent’s action head while keeping the shared trunk the same. S-variable now starts the correction and knowledge transfer tasks with features it learned before but new action preferences.
 
@@ -354,12 +351,12 @@ To do this, we re-initialize the agent’s action head while keeping the shared 
 
 <figure>
   <img src="/images/projects/reward-hacking/final/image-14.png" alt="Action-head reset on claim-beacon">
-  <figcaption>Action-head reset on claim-beacon</figcaption>
+  <figcaption>Resetting S-variable's action head on claim-beacon task</figcaption>
 </figure>
 
 <figure>
   <img src="/images/projects/reward-hacking/final/image-15.png" alt="Action-head reset on pickup-and-deliver">
-  <figcaption>Action-head reset on pickup-and-deliver</figcaption>
+  <figcaption>Resetting S-variable's action-head on the pickup-and-deliver task</figcaption>
 </figure>
 
 Just as before, this intervention also drastically improved the learning outcomes in our shortcut agent, supporting our hypothesis that the agent’s **confident** action preferences were the major driver of slow learning (and not the internal features). The separation isn’t perfect, though. Resetting the action head changes how the agent explores, but the shared trunk also continues to update during training. So an improvement caused by resetting the action head doesn’t prove that the action preferences were the only problem, or that the trunk’s internal representations are harmless. However, it does give us an important intervention to correct networks **without re-training** from scratch.
@@ -372,14 +369,14 @@ Our study of Gridworlds leads to many interesting observations about how a histo
 
 I’d like to add that all of the above findings are only within the context of our Gridworld setup. None of them automatically generalize to bigger systems like LLMs, and nothing done in this study posits such a causal link. However, the interventions used here can easily be tested on deeper networks and may even prove to be powerful methods to correct ‘bad’ behavior. A lot of this, for example imitation learning, is already done in the SFT phase of post-training. This raises an interesting question: *why do LLMs still end up reward hacking, even on tasks (such as coding) where they have received examples of what a good solution looks like?* A much more interesting question would be to think from an Alignment lens…*What does a ‘good’ example of aligned behavior (that we can give an LLM to imitate) look like?* I don’t think this problem has been solved yet. Such an inquiry doesn’t have to be so broad either. For instance, we could just fixate on one behavior that we may want to correct in an LLM, like being sycophantic. What kind of responses could we provide for imitation so that the LLM learns to agree when it thinks the user is right and yet not end up becoming overly critical of user responses.
 
-During the course of this study, a couple other questions came to my mind, which I hope to get to some time in the near future. 
+During the course of this study, a couple other questions came to my mind, which I hope to get to some time in the near future.
 
 1. I stumbled upon [this thread](https://x.com/owainevans_uk/status/2119520230829641811?a=rzPo1E5-21aX3626YBk&s=46) by Owain Evans while writing this report and it really made me wonder *whether agents would learn to hack even if they weren’t rewarded for it.* My hunch would be no, unless they have a hint about why it might be in their benefit to do so.
 2. *Can reward hacking lead to catastrophic forgetting?* That is, can an agent that begins to exploit its way through tasks lead it to lose older capabilities?
 
-That’s all for now! Thanks for sticking around: I know it’s been a long read. If you have any feedback or would want to collaborate on any project, please feel free to reach out! ([email](mailto:vatslgoswami@gmail.com)) I’m always open to work on interesting problems
+That’s all for now! Thanks for sticking around: I know it’s been a long read. If you have any feedback or would want to collaborate on any project, please feel free to [reach out](mailto:vatslgoswami@gmail.com)!
 
-Until next time,
--Vatsl. 
+Until next time,  
+-Vatsl.
 
-*Wisdom begins in wonder.*
+*"Wisdom begins in wonder."*

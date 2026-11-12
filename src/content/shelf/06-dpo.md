@@ -6,5 +6,5 @@ kind: paper
 year: 2023
 added: 2026-11-13
 ---
-
-- I was thinking a lot about how KL regularization may prevent strong behavioral alignment in models and this provided me the mathematical framework to reason about that. Culminated in [this blog](/research/kl-regularization-behavioral-change/).
+- I was thinking a lot about how KL regularization may prevent strong behavioral changes in models (and how that affects alignment) and this provided me the mathematical framework to reason about that.
+- Culminated in [this post](/research/kl-regularization-behavioral-change/).

@@ -1,5 +1,5 @@
 ---
-title: Chess Self-Play with Reinforcement Learning
+title: Chess self-play with Reinforcement Learning
 year: 2026
 kind: Project
 summary: An AlphaZero-style chess bot combining a ResNet trained on Lichess data, and policy improvements using MCTS and self-play based RL.

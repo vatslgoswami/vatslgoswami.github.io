@@ -5,10 +5,11 @@ import YearMeta from './YearMeta.astro';
 
 interface Props {
 	post: CollectionEntry<'blog'>;
+	showDescription?: boolean;
 }
 
 const { post } = Astro.props;
-const { title, date, externalUrl, description, tags } = post.data;
+const { title, date, externalUrl, description, tags = [] } = post.data;
 
 const label = date.getUTCFullYear();
 const href = externalUrl ?? `/blog/${post.id}/`;
@@ -19,7 +20,7 @@ const host = externalUrl ? new URL(externalUrl).hostname.replace(/^www\./, '') :
 	<YearMeta year={label} kind="Blog" datetime={date.toISOString().slice(0, 10)} />
 	<ContentTitle {title} {href} level="h3" />
 	{host && <small>on {host} <span aria-label="external link">↗</span></small>}
-	{tags.length > 0 && description && <p class="description">{description}</p>}
+	{Astro.props.showDescription && tags.length > 0 && description && <p class="description">{description}</p>}
 	{tags.length > 0 && <div class="tags">{tags.map((tag) => <span>{tag}</span>)}</div>}
 </li>
 

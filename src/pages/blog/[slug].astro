@@ -18,7 +18,7 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, date, description, tags } = post.data;
+const { title, date, description, tags = [] } = post.data;
 const { Content } = await render(post);
 const label = date.toLocaleDateString('en-US', {
 	month: 'short',
@@ -33,7 +33,6 @@ const label = date.toLocaleDateString('en-US', {
 		<header>
 			<h1 class="page-title">{title}</h1>
 			<time class="page-meta" datetime={date.toISOString().slice(0, 10)}>{label}</time>
-			{description && <p class="post-description">{description}</p>}
 			{tags.length > 0 && <div class="post-tags">{tags.map((tag) => <span>{tag}</span>)}</div>}
 		</header>
 		<ArticleBody backHref="/blog/" backLabel="All posts"><Content /></ArticleBody>
@@ -41,7 +40,6 @@ const label = date.toLocaleDateString('en-US', {
 </Base>
 
 <style>
-	.post-description { margin: 12px 0 0; color: var(--muted); }
 	.post-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
 	.post-tags span { font-family: var(--mono); font-size: var(--text-micro); padding: 1px 8px; border-radius: 999px; background: var(--mustard-soft); color: var(--mustard-ink); }
 	:global(.prose .katex-display) { overflow-x: auto; overflow-y: hidden; padding: 0.35em 0; }

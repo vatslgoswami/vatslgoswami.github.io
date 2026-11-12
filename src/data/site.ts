@@ -13,7 +13,7 @@ export const site = {
 	nav: [
 		{ label: 'About', href: '/' },
 		{ label: 'Projects', href: '/projects' },
-		{ label: 'Blogs', href: '/blog' },
+		{ label: 'Research', href: '/research' },
 		{ label: 'Shelf', href: '/shelf' },
 	],
 	// Intro line at the top of the Shelf page

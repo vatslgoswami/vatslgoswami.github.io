@@ -1,22 +1,7 @@
 ---
-import { render } from 'astro:content';
-import type { CollectionEntry } from 'astro:content';
-import ArticlePage from '../../components/ArticlePage.astro';
 import { getPosts } from '../../lib/content';
-import { countArticleWords } from '../../lib/word-count';
-
 export async function getStaticPaths() {
-	const posts = await getPosts();
-	return posts.filter((post) => !post.data.externalUrl)
-		.map((post) => ({ params: { slug: post.id }, props: { post } }));
+	return (await getPosts()).filter((post) => !post.data.externalUrl).map((post) => ({ params: { slug: post.id } }));
 }
-
-interface Props { post: CollectionEntry<'blog'>; }
-const { post } = Astro.props;
-const { title, date, description, tags = [], wordCount } = post.data;
-const { Content } = await render(post);
+return Astro.redirect(`/research/${Astro.params.slug}/`, 301);
 ---
-
-<ArticlePage {title} {description} year={date.getUTCFullYear()} kind="Blog" wordCount={wordCount ?? countArticleWords(post.body ?? '')} {tags} backHref="/blog/" backLabel="All posts">
-	<Content />
-</ArticlePage>

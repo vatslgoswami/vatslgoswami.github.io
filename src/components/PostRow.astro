@@ -5,10 +5,10 @@ import ContentRow from './ContentRow.astro';
 interface Props { post: CollectionEntry<'blog'>; }
 const { post } = Astro.props;
 const { title, date, externalUrl, description, tags = [] } = post.data;
-const href = externalUrl ?? `/blog/${post.id}/`;
+const href = externalUrl ?? `/research/${post.id}/`;
 const externalHost = externalUrl ? new URL(externalUrl).hostname.replace(/^www\./, '') : undefined;
 ---
 
 <li>
-	<ContentRow {title} year={date.getUTCFullYear()} kind="Blog" {href} summary={description} {tags} datetime={date.toISOString().slice(0, 10)} {externalHost} />
+	<ContentRow {title} year={date.getUTCFullYear()} kind="Research" {href} summary={description} {tags} datetime={date.toISOString().slice(0, 10)} {externalHost} />
 </li>

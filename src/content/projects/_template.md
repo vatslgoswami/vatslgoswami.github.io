@@ -10,6 +10,7 @@ image: /images/projects/my-project.png # optional; put the file in public/images
 links: # optional; displayed on the project row and detail page
   - { label: code, url: "https://github.com/vatslgoswami" }
 # wordCount: 4999 # optional override; otherwise counted from the article
+research: false # true moves a write-up to Research and preserves its old project URL
 featured: false # true shows it under "Selected projects" on the About page
 detail: false # true links the title to a project page containing the Markdown body
 draft: true

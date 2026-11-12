@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import ResearchRow from '../../components/ResearchRow.astro';
+import { getResearchEntries } from '../../lib/content';
+const entries = await getResearchEntries();
+---
+
+<Base title="Research">
+	<h1 class="visually-hidden">Research</h1>
+	{entries.length === 0 ? <p class="empty">Research coming soon.</p> : (
+		<ul class="posts">{entries.map((item) => <ResearchRow {item} />)}</ul>
+	)}
+</Base>

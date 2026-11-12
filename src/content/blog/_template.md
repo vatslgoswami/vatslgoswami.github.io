@@ -1,6 +1,6 @@
 ---
 # Copy this file to a new name (no leading underscore) to add a post.
-# The file name becomes the URL: my-post.md -> /blog/my-post/
+# The file name becomes the URL: my-post.md -> /research/my-post/
 # Files starting with "_" are ignored by the site.
 title: Post title
 date: 2026-10-25

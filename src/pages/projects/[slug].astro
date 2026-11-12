@@ -13,6 +13,7 @@ export async function getStaticPaths() {
 
 interface Props { project: CollectionEntry<'projects'>; }
 const { project } = Astro.props;
+if (project.data.research) return Astro.redirect(`/research/${project.id}/`, 301);
 const { title, year, kind, summary, links, tags, wordCount } = project.data;
 const githubLink = links.find((link) => link.label.toLowerCase() === 'github');
 const otherLinks = links.filter((link) => link !== githubLink);

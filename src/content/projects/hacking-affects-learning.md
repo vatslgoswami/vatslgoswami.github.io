@@ -8,6 +8,7 @@ links:
   - { label: GitHub, url: "https://github.com/vatslgoswami/hacking-affects-learning" }
 featured: true
 pinned: true
+research: true
 wordCount: 4999
 detail: true
 ---

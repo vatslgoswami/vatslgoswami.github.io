@@ -10,7 +10,7 @@ A minimal personal site for fellowship applications and similar: who I am, what 
 
 - **Stack:** Astro 7, static output, deployed to GitHub Pages by `.github/workflows/deploy.yml`.
 - **URL:** https://vatslgoswami.github.io (repo `vatslgoswami/vatslgoswami.github.io`).
-- **Pages:** About (`/`), Projects (`/projects`), Blogs (`/blog`), Shelf (`/shelf`), plus `/blog/<slug>` for posts written on the site.
+- **Pages:** About (`/`), Projects (`/projects`), Research (`/research`), Shelf (`/shelf`), plus `/research/<slug>` for research write-ups. Old blog URLs redirect to their research equivalents.
 - **Style:** minimal and text-first, like ishanjmukherjee.github.io. White background, near-black text. Mustard (`--mustard`) and salmon (`--salmon`) are accents only: links, tags, the active nav item, year labels. Tokens are in `src/styles/global.css`. IBM Plex Sans for text and IBM Plex Mono for dates and meta, via Google Fonts with system fallbacks. Light theme only.
 - **No extras for now:** no publications, experience, news or tag filters.
 
@@ -29,7 +29,7 @@ UI implementation conventions and the typography scale are documented in [DESIGN
 - Two columns: square photo (`site.photo`, ~140px) on the left, bio on the right. Stacks on phones.
 - Bio comes from `src/data/about.md` (rendered Markdown).
 - Under the bio, a row of text chips for each `site.socials` entry, plus a highlighted mustard "CV (PDF)" chip linking to `site.cv`.
-- Below, in this order: "Recent writing" (3 newest posts, same date + title rows as the Blogs list), then "Selected projects" (2 featured projects, newest first). Projects use the shared listing row component (meta line, title, summary, tags, links, thumbnail), so build that row as a shared component. Each section has an "all →" link to its page.
+- Below, in this order: "Recent research" (3 newest research entries, same listing rows as the Research page), then "Selected projects" (2 featured projects, newest first). Projects use the shared listing row component (meta line, title, summary, tags, links, thumbnail), so build that row as a shared component. Each section has an "all →" link to its page.
 - If `public/photo.jpg` is missing, show a neutral placeholder rather than a broken image.
 
 ## Projects (`src/pages/projects.astro`)
@@ -37,11 +37,11 @@ UI implementation conventions and the typography scale are documented in [DESIGN
 - Shared blog/project listing rows, newest first (by `year`). Left: meta line `year · kind` in mono, bold title, summary clamped to 2 lines, then mustard tag pills and salmon link labels (`links`). Right: 3:2 thumbnail from `image`, if one is set.
 - A project with `detail: true` links its title to its detail page; otherwise the title links to its first entry in `links`, if present. GitHub links appear beside the title.
 
-## Blogs (`src/pages/blog/index.astro`, `src/pages/blog/[slug].astro`)
+## Research (`src/pages/research/index.astro`, `src/pages/research/[slug].astro`)
 
-- Newest first, using the same listing row as projects: year and Blog label, title, description and tags.
-- Posts with `externalUrl` link out and show a small "↗" marker. The rest link to `/blog/<id>`.
-- Post page: title, date, Markdown body in the shared full-width article layout, "← All posts" link. Generate pages only for posts without `externalUrl`.
+- Newest first, using the same listing row as projects: year and Research label, title, description and tags.
+- Posts with `externalUrl` link out and show a small "↗" marker. Other posts and projects marked `research: true` link to `/research/<id>`.
+- Post page: title, date, Markdown body in the shared full-width article layout, "← All research" link. External posts keep linking to their external URLs.
 
 ## Shelf (`src/pages/shelf.astro`)
 

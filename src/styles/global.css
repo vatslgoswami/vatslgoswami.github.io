@@ -64,7 +64,17 @@ h1,
 h2,
 h3 {
 	line-height: 1.25;
+}
+
+h2,
+h3 {
 	text-wrap: balance;
+}
+
+h1 {
+	width: 100%;
+	max-width: none;
+	text-wrap: wrap;
 }
 
 /* Page column: ~680px, centred, 16px minimum gutter */

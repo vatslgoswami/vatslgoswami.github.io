@@ -29,7 +29,7 @@ UI implementation conventions and the typography scale are documented in [DESIGN
 - Two columns: square photo (`site.photo`, ~140px) on the left, bio on the right. Stacks on phones.
 - Bio comes from `src/data/about.md` (rendered Markdown).
 - Under the bio, a row of text chips for each `site.socials` entry, plus a highlighted mustard "CV (PDF)" chip linking to `site.cv`.
-- Below, in this order: "Recent research" (3 newest research entries, same listing rows as the Research page), then "Selected projects" (2 featured projects, newest first). Projects use the shared listing row component (meta line, title, summary, tags, links, thumbnail), so build that row as a shared component. Each section has an "all →" link to its page.
+- Below, in this order: "Selected research" (3 newest research entries, same listing rows as the Research page), then "Selected projects" (2 featured projects, newest first). Projects use the shared listing row component (meta line, title, summary, tags, links, thumbnail), so build that row as a shared component. Each section has an "all →" link to its page.
 - If `public/photo.jpg` is missing, show a neutral placeholder rather than a broken image.
 
 ## Projects (`src/pages/projects.astro`)

@@ -150,7 +150,7 @@ h1 {
 .year-meta { font-family: var(--mono); font-size: var(--text-small); color: var(--muted); font-variant-numeric: tabular-nums; }
 .year-meta-kind { font-family: var(--mono); font-size: var(--text-small); color: var(--muted); }
 .page-meta { font-family: var(--mono); font-size: var(--text-meta); color: var(--muted); }
-.prose { width: 100%; max-width: var(--reading-measure); margin-top: 24px; font-size: calc(var(--text-body) + 1px); }
+.prose { width: 100%; max-width: var(--reading-measure); margin-top: 24px; font-size: calc(var(--text-body) + 2px); }
 .prose h2 { font-size: calc(var(--text-body) * 1.5 + 1px); }
 .prose h3 { font-size: calc(var(--text-body) * 1.17 + 1px); }
 .prose .katex-display { max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 0.35em 0; text-align: center; }

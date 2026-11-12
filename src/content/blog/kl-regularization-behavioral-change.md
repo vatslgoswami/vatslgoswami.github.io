@@ -48,7 +48,9 @@ Let’s start by simplifying the objective further:
 
 $$
 \begin{aligned}
-J(q) &= (1-q)\Delta-\beta(D_{\mathrm{KL}}(\pi||\pi_0))\\&\quad \implies J(q) = (1-q)\Delta-\beta\sum_y \pi(y|x)\log\left(\dfrac{\pi(y|x)}{\pi_0(y|x)}\right)\\&\quad \therefore J(q)= (1-q)\Delta-\beta\left[q\log\dfrac{q}{p}+(1-q)\log\dfrac{1-q}{1-p}\right]
+J(q) &= (1-q)\Delta-\beta(D_{\mathrm{KL}}(\pi||\pi_0)) \\
+&= (1-q)\Delta-\beta\sum_y \pi(y|x)\log\left(\dfrac{\pi(y|x)}{\pi_0(y|x)}\right) \\
+&= (1-q)\Delta-\beta\left[q\log\dfrac{q}{p}+(1-q)\log\dfrac{1-q}{1-p}\right]
 \end{aligned}
 $$
 
@@ -74,7 +76,8 @@ Now, the first term of the KL-divergence penalty:
 
 $$
 \begin{aligned}
-\frac{d}{dq}[q\log\dfrac{q}{p}]&=(\frac{d}{dq}q\cdot\log\dfrac{q}{p})+(q\cdot\frac{d}{dq}[\log\dfrac{q}{p}])\\&\quad \therefore \frac{d}{dq}[q\log\dfrac{q}{p}]=\log\dfrac{q}{p}+1\tag{1}
+\frac{d}{dq}[q\log\dfrac{q}{p}] &= (\frac{d}{dq}q\cdot\log\dfrac{q}{p})+(q\cdot\frac{d}{dq}[\log\dfrac{q}{p}]) \\
+&= \log\dfrac{q}{p}+1\tag{1}
 \end{aligned}
 $$
 
@@ -170,7 +173,10 @@ $$
 And for the opening example, where $p=0.9$ and we want $\eta=0.01$, we get
 
 $$
-\frac{\Delta}{\beta}\ge \log 9-\log\frac{0.01}{0.99}=\log 891\approx \boxed{6.792}
+\begin{aligned}
+\frac{\Delta}{\beta} &\ge \log 9-\log\frac{0.01}{0.99} \\
+&= \log 891 \approx \boxed{6.792}
+\end{aligned}
 $$
 
 That is, the reward advantage received from correcting a user’s claim over agreeing with them has to be $6.79$ times more than the KL-coefficient.
@@ -433,7 +439,12 @@ We further assume:
 
 Recall, our objective $J(\theta)$. We express reparameterize it again: this time in terms $\pi$, a policy giving probabilities over full responses:
 
-$J(\pi)=\mathbb{E}_{y\sim\pi}[r(y)-\beta D_{\mathrm{KL}}(\pi||\pi_0)] = \sum_{y}\pi(y)r(y) - \beta \sum_{y} \pi(y) \log \frac{\pi(y)}{\pi_0(y)}$
+$$
+\begin{aligned}
+J(\pi) &= \mathbb{E}_{y\sim\pi}[r(y)-\beta D_{\mathrm{KL}}(\pi||\pi_0)] \\
+&= \sum_{y}\pi(y)r(y) - \beta \sum_{y} \pi(y) \log \frac{\pi(y)}{\pi_0(y)}
+\end{aligned}
+$$
 
 **Step 1: Build a candidate distribution**
 
@@ -503,7 +514,7 @@ Let’s see what the expectation of the reward is. Putting [$(6)$](#eq-6)  into 
 
 $$
 \begin{aligned}
-\mathbb{E}_{y\sim\pi}[r(y)] &=\mathbb{E}_{y\sim\pi}[\beta\log\frac{\pi^*(y)}{\pi_0(y)}+\beta\log Z] \\&= \mathbb{E}_{y\sim\pi}[\beta\log\frac{\pi^*(y)}{\pi_0(y)}]+\mathbb{E}_{y\sim\pi}[\beta\log Z]\\&\quad 
+\mathbb{E}_{y\sim\pi}[r(y)] &=\mathbb{E}_{y\sim\pi}[\beta\log\frac{\pi^*(y)}{\pi_0(y)}+\beta\log Z] \\&= \mathbb{E}_{y\sim\pi}[\beta\log\frac{\pi^*(y)}{\pi_0(y)}]+\mathbb{E}_{y\sim\pi}[\beta\log Z]
 \end{aligned}
 $$
 
@@ -551,7 +562,9 @@ But notice that we can substitute the within-group probabilities $\pi_0(y)=p\,\p
 
 $$
 \begin{aligned}
-q^*&=\frac{1}{Z}\sum_{y\in H}\pi_0(y)e^{\frac{r(y)}{\beta}}=\frac{1}{Z}\sum_{y\in H}p\,\pi_0(y|H)e^{\frac{r(y)}{\beta}}\\&= \frac{p}{Z}\sum_{y\in H}\pi_0(y|H)e^{\frac{r(y)}{\beta}}
+q^* &= \frac{1}{Z}\sum_{y\in H}\pi_0(y)e^{\frac{r(y)}{\beta}} \\
+&= \frac{1}{Z}\sum_{y\in H}p\,\pi_0(y|H)e^{\frac{r(y)}{\beta}} \\
+&= \frac{p}{Z}\sum_{y\in H}\pi_0(y|H)e^{\frac{r(y)}{\beta}}
 \end{aligned}
 $$
 

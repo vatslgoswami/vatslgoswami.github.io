@@ -20,7 +20,7 @@ UI implementation conventions and the typography scale are documented in [DESIGN
 
 - `src/layouts/Base.astro`: html shell, `<title>`, meta description, favicon, Google Fonts link, global.css.
 - Header: name on the left (links to `/`), nav on the right (`site.nav`). The active item gets a mustard underline.
-- Content column uses `--measure`, centred, with a 16px minimum side gutter. Long-form text uses `--reading-measure`. Must work at phone width.
+- Content column uses `--measure`, centred, with a 16px minimum side gutter. Long-form blogs and projects share the full content width and typography through `ArticleBody` and `--reading-measure`. Must work at phone width.
 - Footer: `© <year> Vatsl Krishnn Goswami`.
 
 ## About (`src/pages/index.astro`)
@@ -40,7 +40,7 @@ UI implementation conventions and the typography scale are documented in [DESIGN
 
 - Plain list, newest first: small grey year and Blog label above the title, matching project rows.
 - Posts with `externalUrl` link out and show a small "↗" marker. The rest link to `/blog/<id>`.
-- Post page: title, date, Markdown body in a ~65-character column, "← All posts" link. Generate pages only for posts without `externalUrl`.
+- Post page: title, date, Markdown body in the shared full-width article layout, "← All posts" link. Generate pages only for posts without `externalUrl`.
 
 ## Shelf (`src/pages/shelf.astro`)
 

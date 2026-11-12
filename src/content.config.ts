@@ -19,6 +19,7 @@ const projects = defineCollection({
 			.default([]),
 		featured: z.boolean().default(false),
 		pinned: z.boolean().default(false),
+		listed: z.boolean().default(true),
 		// Set true when the Markdown body should have its own project page.
 		detail: z.boolean().default(false),
 		draft: z.boolean().default(false),

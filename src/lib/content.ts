@@ -14,6 +14,11 @@ export async function getProjects() {
 	);
 }
 
+// Published projects visible in site listings; unlisted detail pages remain accessible.
+export async function getListedProjects() {
+	return (await getProjects()).filter((project) => project.data.listed !== false);
+}
+
 // Published shelf items, most recently added first.
 export async function getShelf() {
 	const items = await getCollection('shelf', ({ data }) => !data.draft);

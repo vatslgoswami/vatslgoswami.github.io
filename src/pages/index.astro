@@ -6,10 +6,10 @@ import ProjectRow from '../components/ProjectRow.astro';
 import PostRow from '../components/PostRow.astro';
 import { Content as Bio } from '../data/about.md';
 import { site } from '../data/site';
-import { getPosts, getProjects } from '../lib/content';
+import { getPosts, getListedProjects } from '../lib/content';
 
 const recentPosts = (await getPosts()).slice(0, 3);
-const featured = (await getProjects()).filter((p) => p.data.featured).slice(0, 2);
+const featured = (await getListedProjects()).filter((p) => p.data.featured).slice(0, 2);
 
 // Fall back to a placeholder until public/photo.jpg is added.
 const hasPhoto = existsSync(join(process.cwd(), 'public', site.photo));

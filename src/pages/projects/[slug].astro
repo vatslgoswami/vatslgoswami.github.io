@@ -1,63 +1,25 @@
 ---
 import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
-import Base from '../../layouts/Base.astro';
-import ArticleBody from '../../components/ArticleBody.astro';
-import ContentTitle from '../../components/ContentTitle.astro';
+import ArticlePage from '../../components/ArticlePage.astro';
 import { getProjects } from '../../lib/content';
+import { countArticleWords } from '../../lib/word-count';
 
 export async function getStaticPaths() {
 	const projects = await getProjects();
-	return projects
-		.filter((project) => project.data.detail)
+	return projects.filter((project) => project.data.detail)
 		.map((project) => ({ params: { slug: project.id }, props: { project } }));
 }
 
-interface Props {
-	project: CollectionEntry<'projects'>;
-}
-
+interface Props { project: CollectionEntry<'projects'>; }
 const { project } = Astro.props;
-const { title, year, kind, summary, links } = project.data;
+if (project.data.research) return Astro.redirect(`/research/${project.id}/`, 301);
+const { title, year, kind, summary, links, tags, wordCount } = project.data;
 const githubLink = links.find((link) => link.label.toLowerCase() === 'github');
 const otherLinks = links.filter((link) => link !== githubLink);
 const { Content } = await render(project);
 ---
 
-<Base title={title} description={summary}>
-	<article class:list={{ "reward-hacking-article": project.id === "hacking-affects-learning" }}>
-		<header>
-			<ContentTitle {title} githubUrl={githubLink?.url} level="h1" />
-			<div class="page-meta">{year} · {kind}{project.id === "hacking-affects-learning" && " · 4999 words"}</div>
-			{otherLinks.length > 0 && <p class="links">{otherLinks.map((link) => <a href={link.url}>{link.label} ↗</a>)}</p>}
-		</header>
-		<ArticleBody backHref="/projects/" backLabel="All projects"><Content /></ArticleBody>
-	</article>
-</Base>
-
-<script>
-	const videos = document.querySelectorAll<HTMLVideoElement>('.reward-hacking-article video');
-	const observer = new IntersectionObserver((entries) => {
-		for (const entry of entries) {
-			const video = entry.target as HTMLVideoElement;
-			if (entry.isIntersecting) {
-				void video.play().catch(() => {});
-			} else {
-				video.pause();
-			}
-		}
-	}, { threshold: 0.25 });
-	videos.forEach((video) => observer.observe(video));
-</script>
-
-<style>
-	.reward-hacking-article { width: 100%; }
-	.reward-hacking-article :global(.prose),
-	.reward-hacking-article :global(.content-title) { width: 100%; max-width: none; }
-	.reward-hacking-article :global(.content-title) { text-wrap: wrap; }
-	.reward-hacking-article :global(.prose) { font-size: calc(var(--text-body) + 1px); }
-	.reward-hacking-article :global(.prose h2) { font-size: calc(var(--text-body) * 1.5 + 1px); }
-	.reward-hacking-article :global(.prose h3) { font-size: calc(var(--text-body) * 1.17 + 1px); }
-	.reward-hacking-article :global(.prose figcaption) { font-size: calc(var(--text-small) + 2px); }
-	.links { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0 0; font-family: var(--mono); font-size: var(--text-meta); }
-</style>
+<ArticlePage {title} description={summary} {year} {kind} wordCount={wordCount ?? countArticleWords(project.body ?? '')} {tags} githubUrl={githubLink?.url} links={otherLinks} backHref="/projects/" backLabel="All projects">
+	<Content />
+</ArticlePage>

@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import ArticleBody from './ArticleBody.astro';
+import ContentTitle from './ContentTitle.astro';
+import TagList from './TagList.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+	year: number;
+	kind: string;
+	wordCount: number;
+	tags: string[];
+	githubUrl?: string;
+	links?: { label: string; url: string }[];
+	backHref: string;
+	backLabel: string;
+}
+
+const { title, description, year, kind, wordCount, tags, githubUrl, links = [], backHref, backLabel } = Astro.props;
+---
+
+<Base {title} {description}>
+	<article class="article-page">
+		<header>
+			<ContentTitle {title} {githubUrl} level="h1" />
+			<div class="page-meta">{year} · {kind} · {wordCount} words</div>
+			<TagList {tags} {links} />
+		</header>
+		<ArticleBody {backHref} {backLabel}><slot /></ArticleBody>
+	</article>
+</Base>
+
+<script>
+	const videos = document.querySelectorAll<HTMLVideoElement>('.article-page video');
+	const observer = new IntersectionObserver((entries) => {
+		for (const entry of entries) {
+			const video = entry.target as HTMLVideoElement;
+			if (entry.isIntersecting) void video.play().catch(() => {});
+			else video.pause();
+		}
+	}, { threshold: 0.25 });
+	videos.forEach((video) => observer.observe(video));
+</script>

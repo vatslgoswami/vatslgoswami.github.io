@@ -1,0 +1,21 @@
+---
+interface Props {
+	tags: string[];
+	links?: { label: string; url: string }[];
+}
+
+const { tags, links = [] } = Astro.props;
+---
+
+{(tags.length > 0 || links.length > 0) && (
+	<div class="tags">
+		{tags.map((tag) => <span>{tag}</span>)}
+		{links.map((link) => <a href={link.url}>{link.label}</a>)}
+	</div>
+)}
+
+<style>
+	.tags { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; margin-top: 10px; font-family: var(--mono); }
+	.tags span { font-size: var(--text-micro); padding: 1px 8px; border-radius: 999px; background: var(--mustard-soft); color: var(--mustard-ink); }
+	.tags a { font-size: var(--text-small); }
+</style>

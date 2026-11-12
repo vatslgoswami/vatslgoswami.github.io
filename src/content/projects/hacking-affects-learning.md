@@ -8,9 +8,11 @@ links:
   - { label: GitHub, url: "https://github.com/vatslgoswami/hacking-affects-learning" }
 featured: true
 pinned: true
+research: true
+wordCount: 4999
 detail: true
 ---
-Note: I use the words ‘agent’ and ‘policy’ almost interchangeably across this blog. RL folks, please pardon me xD.
+<u><wbr>Note:</u> I use the words ‘agent’ and ‘policy’ almost interchangeably across this blog. RL folks, please pardon me xD.
 
 ## First, a real world scenario
 
@@ -376,7 +378,7 @@ During the course of this study, a couple other questions came to my mind, which
 
 That’s all for now! Thanks for sticking around: I know it’s been a long read. If you have any feedback or would want to collaborate on any project, please feel free to [reach out](mailto:vatslgoswami@gmail.com)!
 
-Until next time,  
+Until next time,
 -Vatsl.
 
 *"Wisdom begins in wonder."*

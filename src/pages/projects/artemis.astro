@@ -1,0 +1,6 @@
+---
+import { getEntry } from 'astro:content';
+
+const project = await getEntry('projects', 'artemis');
+return Astro.redirect(project!.data.links[0].url, 301);
+---

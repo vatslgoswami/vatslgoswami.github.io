@@ -1,9 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import ProjectRow from '../components/ProjectRow.astro';
-import { getProjects } from '../lib/content';
+import { getListedProjects } from '../lib/content';
 
-const projects = await getProjects();
+const projects = await getListedProjects();
 ---
 
 <Base title="Projects">
@@ -21,8 +21,3 @@ const projects = await getProjects();
 	}
 </Base>
 
-<style>
-	.list {
-		margin-top: -22px;
-	}
-</style>

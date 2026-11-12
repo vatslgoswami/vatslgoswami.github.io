@@ -1,0 +1,16 @@
+---
+import type { getResearchEntries } from '../lib/content';
+import ContentRow from './ContentRow.astro';
+import PostRow from './PostRow.astro';
+
+interface Props { item: Awaited<ReturnType<typeof getResearchEntries>>[number]; }
+const { item } = Astro.props;
+const project = item.type === 'project' ? item.entry : undefined;
+const githubLink = project?.data.links.find((link) => link.label.toLowerCase() === 'github');
+---
+
+{item.type === 'blog' ? <PostRow post={item.entry} /> : (
+	<li>
+		<ContentRow title={item.entry.data.title} year={item.entry.data.year} kind="Research" href={`/research/${item.entry.id}/`} summary={item.entry.data.summary} tags={item.entry.data.tags} githubUrl={githubLink?.url} image={item.entry.data.image} links={item.entry.data.links.filter((link) => link !== githubLink)} />
+	</li>
+)}

@@ -1,0 +1,25 @@
+---
+import { render } from 'astro:content';
+import type { getResearchEntries } from '../../lib/content';
+import ArticlePage from '../../components/ArticlePage.astro';
+import { getResearchEntries } from '../../lib/content';
+import { countArticleWords } from '../../lib/word-count';
+
+export async function getStaticPaths() {
+	const entries = await getResearchEntries();
+	return entries.filter((item) => item.type !== 'blog' || !item.entry.data.externalUrl)
+		.map((item) => ({ params: { slug: item.entry.id }, props: { item } }));
+}
+interface Props { item: Awaited<ReturnType<typeof getResearchEntries>>[number]; }
+const { item } = Astro.props;
+const entry = item.entry;
+const { Content } = await render(entry);
+const year = item.type === 'blog' ? item.entry.data.date.getUTCFullYear() : item.entry.data.year;
+const description = item.type === 'blog' ? item.entry.data.description : item.entry.data.summary;
+const links = item.type === 'project' ? item.entry.data.links : [];
+const github = links.find((link) => link.label.toLowerCase() === 'github');
+---
+
+<ArticlePage title={entry.data.title} {description} {year} kind="Research" wordCount={entry.data.wordCount ?? countArticleWords(entry.body ?? '')} tags={entry.data.tags ?? []} githubUrl={github?.url} links={links.filter((link) => link !== github)} backHref="/research/" backLabel="All research">
+	<Content />
+</ArticlePage>

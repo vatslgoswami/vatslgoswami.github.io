@@ -1,0 +1,41 @@
+---
+import ContentTitle from './ContentTitle.astro';
+import TagList from './TagList.astro';
+import YearMeta from './YearMeta.astro';
+
+interface Props {
+	title: string;
+	year: number;
+	kind: string;
+	href?: string;
+	summary?: string;
+	tags: string[];
+	githubUrl?: string;
+	links?: { label: string; url: string }[];
+	image?: string;
+	datetime?: string;
+	externalHost?: string;
+}
+
+const { title, year, kind, href, summary, tags, githubUrl, links = [], image, datetime, externalHost } = Astro.props;
+---
+
+<article class:list={['content-row', 'list-row', { 'has-thumb': image }]}>
+	<div>
+		<YearMeta {year} {kind} {datetime} />
+		<ContentTitle {title} {href} {githubUrl} level="h3" />
+		{externalHost && <small>on {externalHost} <span aria-label="external link">↗</span></small>}
+		{summary && <p class="summary">{summary}</p>}
+		<TagList {tags} {links} />
+	</div>
+	{image && <img class="thumb" src={image} alt="" loading="lazy" decoding="async" />}
+</article>
+
+<style>
+	.content-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+	.content-row.has-thumb { grid-template-columns: minmax(0, 1fr) 160px; }
+	.summary { margin: 0; font-size: var(--text-secondary); color: #4a4a4a; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+	small { display: block; font-family: var(--mono); font-size: var(--text-micro); color: var(--muted); }
+	.thumb { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; align-self: center; border-radius: 4px; border: 1px solid var(--line); }
+	@media (max-width: 520px) { .content-row.has-thumb { grid-template-columns: minmax(0, 1fr) 90px; gap: 12px; } }
+</style>

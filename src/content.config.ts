@@ -19,6 +19,9 @@ const projects = defineCollection({
 			.default([]),
 		featured: z.boolean().default(false),
 		pinned: z.boolean().default(false),
+		listed: z.boolean().default(true),
+		research: z.boolean().default(false),
+		wordCount: z.number().int().nonnegative().optional(),
 		// Set true when the Markdown body should have its own project page.
 		detail: z.boolean().default(false),
 		draft: z.boolean().default(false),
@@ -33,6 +36,8 @@ const blog = defineCollection({
 		title: z.string(),
 		date: z.coerce.date(),
 		description: z.string().optional(),
+		tags: z.array(z.string()).default([]),
+		wordCount: z.number().int().nonnegative().optional(),
 		externalUrl: z.string().url().optional(),
 		draft: z.boolean().default(false),
 	}),

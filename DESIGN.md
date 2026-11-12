@@ -17,11 +17,11 @@ Keep the site minimal, readable, and consistent. Use IBM Plex Sans for body text
 | List metadata and chips | `--text-small` | 12px |
 | Tags and compact labels | `--text-micro` | 11px |
 
-Use `.year-label` and `.year-heading` for year group headings. Use `YearMeta.astro` for the common year-and-kind row; list metadata uses the small, grey `--text-small` style rather than the heading style. `ContentTitle.astro` provides the shared project and blog list title and project detail title. Use `.page-title` and `.page-meta` for other detail headings. `ArticleBody.astro` renders detail content and the back link with a shared reading width; its styles use `.prose` and `.back-link`.
+Use `.year-label` and `.year-heading` for year group headings. Use `YearMeta.astro` for the common year-and-kind row; list metadata uses the small, grey `--text-small` style rather than the heading style. `ContentTitle.astro` provides shared project and blog list and detail titles. Use `.page-meta` for detail metadata; `TagList.astro` provides shared tags. `ArticlePage.astro` provides the shared header, metadata, tags, and body for all long-form blogs and projects. `ArticleBody.astro` renders the body and back link; its styles use `.prose` and `.back-link`. Word counts are generated from prose by default and can be overridden in frontmatter.
 
 ## Components and implementation
 
-- Reuse `ProjectRow.astro` for project listings and `PostRow.astro` for blog listings, including on the home page. Both list rows use `.list-row` for spacing and dividers. Keep shared navigation and page chrome in `Base.astro`.
+- Reuse `ProjectRow.astro` and `PostRow.astro` as adapters to `ContentRow.astro` for all project and blog listings, including the home page. Keep shared navigation and page chrome in `Base.astro`.
 - Extract a component when markup and behavior are repeated; use shared CSS tokens or utility classes for repeated visual rules. Avoid abstractions for a single use.
 - Keep content in the relevant content collection, and keep semantic headings and links accessible. Do not duplicate content in page templates.
 - Keep layouts usable at 375px without horizontal scrolling. Let long titles and links wrap naturally; test the home page, lists, and detail pages when changing shared styles.

@@ -3,13 +3,13 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import Base from '../layouts/Base.astro';
 import ProjectRow from '../components/ProjectRow.astro';
-import PostRow from '../components/PostRow.astro';
+import ResearchRow from '../components/ResearchRow.astro';
 import { Content as Bio } from '../data/about.md';
 import { site } from '../data/site';
-import { getPosts, getProjects } from '../lib/content';
+import { getResearchEntries, getListedProjects } from '../lib/content';
 
-const recentPosts = (await getPosts()).slice(0, 3);
-const featured = (await getProjects()).filter((p) => p.data.featured).slice(0, 2);
+const recentResearch = (await getResearchEntries()).slice(0, 3);
+const featured = (await getListedProjects()).filter((p) => p.data.featured).slice(0, 2);
 
 // Fall back to a placeholder until public/photo.jpg is added.
 const hasPhoto = existsSync(join(process.cwd(), 'public', site.photo));
@@ -42,14 +42,14 @@ const hasPhoto = existsSync(join(process.cwd(), 'public', site.photo));
 	</section>
 
 	{
-		recentPosts.length > 0 && (
+		recentResearch.length > 0 && (
 			<section class="block">
 				<h2 class="section-head">
-					Recent writing <a href="/blog/">all →</a>
+					Selected research <a href="/research/">all →</a>
 				</h2>
 				<ul class="posts">
-					{recentPosts.map((post) => (
-						<PostRow post={post} />
+					{recentResearch.map((item) => (
+						<ResearchRow {item} />
 					))}
 				</ul>
 			</section>

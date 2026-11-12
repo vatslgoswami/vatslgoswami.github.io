@@ -12,7 +12,7 @@
 	--sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
 	--mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
 	--measure: 931px;
-	--reading-measure: 65ch;
+	--reading-measure: 100%;
 	--text-micro: 11px;
 	--text-small: 12px;
 	--text-code: 14px;
@@ -64,7 +64,17 @@ h1,
 h2,
 h3 {
 	line-height: 1.25;
+}
+
+h2,
+h3 {
 	text-wrap: balance;
+}
+
+h1 {
+	width: 100%;
+	max-width: none;
+	text-wrap: wrap;
 }
 
 /* Page column: ~680px, centred, 16px minimum gutter */
@@ -139,9 +149,12 @@ h3 {
 .year-heading { margin: 28px 0 12px; }
 .year-meta { font-family: var(--mono); font-size: var(--text-small); color: var(--muted); font-variant-numeric: tabular-nums; }
 .year-meta-kind { font-family: var(--mono); font-size: var(--text-small); color: var(--muted); }
-.page-title { margin: 0 0 6px; font-size: var(--text-page-title); font-weight: 700; letter-spacing: -0.01em; text-wrap: normal; }
 .page-meta { font-family: var(--mono); font-size: var(--text-meta); color: var(--muted); }
-.prose { max-width: var(--reading-measure); margin-top: 24px; }
+.prose { width: 100%; max-width: var(--reading-measure); margin-top: 24px; font-size: calc(var(--text-body) + 2px); }
+.prose h2 { font-size: calc(var(--text-body) * 1.5 + 1px); }
+.prose h3 { font-size: calc(var(--text-body) * 1.17 + 1px); }
+.prose h4 { font-size: calc(var(--text-body) + 4px); }
+.prose .katex-display { max-width: 100%; overflow-x: auto; overflow-y: hidden; padding: 0.35em 0; text-align: center; }
 .prose img { border-radius: 4px; }
 .prose pre { overflow-x: auto; padding: 12px 14px; border-radius: 4px; font-size: var(--text-code); }
 .prose code { font-family: var(--mono); font-size: 0.9em; }
@@ -152,7 +165,7 @@ h3 {
 
 .prose figure { margin: 2em 0; text-align: center; }
 .prose figure img { display: block; max-width: 100%; height: auto; margin: 0 auto; }
-.prose figcaption { margin-top: 8px; color: var(--muted); font-size: var(--text-small); }
+.prose figcaption { margin-top: 8px; color: var(--muted); font-size: calc(var(--text-small) + 2px); }
 .prose figcaption a { color: inherit; }
 .prose video { display: block; width: 100%; height: auto; margin: 0 auto; border-radius: 4px; }
 .prose .video-pair { display: grid; gap: 2em; margin: 2em 0; }

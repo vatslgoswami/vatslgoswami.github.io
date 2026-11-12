@@ -12,8 +12,8 @@ export const site = {
 	],
 	nav: [
 		{ label: 'About', href: '/' },
+		{ label: 'Research', href: '/research' },
 		{ label: 'Projects', href: '/projects' },
-		{ label: 'Blogs', href: '/blog' },
 		{ label: 'Shelf', href: '/shelf' },
 	],
 	// Intro line at the top of the Shelf page

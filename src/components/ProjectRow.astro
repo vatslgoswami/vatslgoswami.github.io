@@ -1,96 +1,13 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import ContentTitle from './ContentTitle.astro';
-import YearMeta from './YearMeta.astro';
+import ContentRow from './ContentRow.astro';
 
-interface Props {
-	project: CollectionEntry<'projects'>;
-}
-
-const { title, year, kind, summary, tags, links, image } = Astro.props.project.data;
+interface Props { project: CollectionEntry<'projects'>; }
+const { project } = Astro.props;
+const { title, year, kind, summary, tags, links, image } = project.data;
 const githubLink = links.find((link) => link.label.toLowerCase() === 'github');
 const otherLinks = links.filter((link) => link !== githubLink);
-const href = Astro.props.project.data.detail ? `/projects/${Astro.props.project.id}/` : links[0]?.url;
+const href = project.data.detail ? `/projects/${project.id}/` : links[0]?.url;
 ---
 
-<article class:list={['project', 'list-row', { 'has-thumb': image }]}>
-	<div class="body">
-		<YearMeta {year} {kind} />
-		<ContentTitle {title} {href} githubUrl={githubLink?.url} level="h3" />
-		<p class="summary">{summary}</p>
-		{
-			(tags.length > 0 || otherLinks.length > 0) && (
-				<div class="tags">
-					{tags.map((tag) => (
-						<span class="tag">{tag}</span>
-					))}
-					{otherLinks.map((link) => (
-						<a href={link.url}>{link.label}</a>
-					))}
-				</div>
-			)
-		}
-	</div>
-	{image && <img class="thumb" src={image} alt="" loading="lazy" decoding="async" />}
-</article>
-
-<style>
-	.project {
-		display: grid;
-		grid-template-columns: minmax(0, 1fr);
-		gap: 20px;
-	}
-
-	.project.has-thumb {
-		grid-template-columns: minmax(0, 1fr) 160px;
-	}
-
-	.summary {
-		margin: 0;
-		font-size: var(--text-secondary);
-		color: #4a4a4a;
-		display: -webkit-box;
-		-webkit-box-orient: vertical;
-		-webkit-line-clamp: 2;
-		line-clamp: 2;
-		overflow: hidden;
-	}
-
-	.tags {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 6px 8px;
-		margin-top: 10px;
-		font-family: var(--mono);
-	}
-
-	.tag {
-		font-size: var(--text-micro);
-		padding: 1px 8px;
-		border-radius: 999px;
-		background: var(--mustard-soft);
-		color: var(--mustard-ink);
-	}
-
-	.tags a {
-		font-size: var(--text-small);
-	}
-
-	.thumb {
-		display: block;
-		width: 100%;
-		aspect-ratio: 3 / 2;
-		object-fit: cover;
-		align-self: center;
-		border-radius: 4px;
-		border: 1px solid var(--line);
-	}
-
-	@media (max-width: 520px) {
-		.project.has-thumb {
-			grid-template-columns: minmax(0, 1fr) 90px;
-			gap: 12px;
-		}
-	}
-</style>
+<ContentRow {title} {year} {kind} {href} {tags} {image} summary={summary} githubUrl={githubLink?.url} links={otherLinks} />

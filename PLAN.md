@@ -21,6 +21,7 @@ UI implementation conventions and the typography scale are documented in [DESIGN
 - `src/layouts/Base.astro`: html shell, `<title>`, meta description, favicon, Google Fonts link, global.css.
 - Header: name on the left (links to `/`), nav on the right (`site.nav`). The active item gets a mustard underline.
 - Content column uses `--measure`, centred, with a 16px minimum side gutter. Long-form blogs and projects share the full content width and typography through `ArticleBody` and `--reading-measure`. Must work at phone width.
+- Links open in a new tab throughout the site, including navigation and article links; the shared layout sets the default.
 - Footer: `© <year> Vatsl Krishnn Goswami`.
 
 ## About (`src/pages/index.astro`)

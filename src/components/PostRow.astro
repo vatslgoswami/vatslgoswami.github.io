@@ -8,7 +8,7 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { title, date, externalUrl } = post.data;
+const { title, date, externalUrl, description, tags } = post.data;
 
 const label = date.getUTCFullYear();
 const href = externalUrl ?? `/blog/${post.id}/`;
@@ -19,9 +19,14 @@ const host = externalUrl ? new URL(externalUrl).hostname.replace(/^www\./, '') :
 	<YearMeta year={label} kind="Blog" datetime={date.toISOString().slice(0, 10)} />
 	<ContentTitle {title} {href} level="h3" />
 	{host && <small>on {host} <span aria-label="external link">↗</span></small>}
+	{tags.length > 0 && description && <p class="description">{description}</p>}
+	{tags.length > 0 && <div class="tags">{tags.map((tag) => <span>{tag}</span>)}</div>}
 </li>
 
 <style>
+	.description { margin: 0; font-size: var(--text-secondary); color: #4a4a4a; }
+	.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+	.tags span { font-family: var(--mono); font-size: var(--text-micro); padding: 1px 8px; border-radius: 999px; background: var(--mustard-soft); color: var(--mustard-ink); }
 	small {
 		display: block;
 		font-family: var(--mono);

@@ -1,35 +1,14 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import ContentTitle from './ContentTitle.astro';
-import TagList from './TagList.astro';
-import YearMeta from './YearMeta.astro';
+import ContentRow from './ContentRow.astro';
 
-interface Props {
-	post: CollectionEntry<'blog'>;
-}
-
+interface Props { post: CollectionEntry<'blog'>; }
 const { post } = Astro.props;
 const { title, date, externalUrl, description, tags = [] } = post.data;
-
-const label = date.getUTCFullYear();
 const href = externalUrl ?? `/blog/${post.id}/`;
-const host = externalUrl ? new URL(externalUrl).hostname.replace(/^www\./, '') : undefined;
+const externalHost = externalUrl ? new URL(externalUrl).hostname.replace(/^www\./, '') : undefined;
 ---
 
-<li class="list-row">
-	<YearMeta year={label} kind="Blog" datetime={date.toISOString().slice(0, 10)} />
-	<ContentTitle {title} {href} level="h3" />
-	{host && <small>on {host} <span aria-label="external link">↗</span></small>}
-	{tags.length > 0 && description && <p class="description">{description}</p>}
-	<TagList {tags} />
+<li>
+	<ContentRow {title} year={date.getUTCFullYear()} kind="Blog" {href} summary={description} {tags} datetime={date.toISOString().slice(0, 10)} {externalHost} />
 </li>
-
-<style>
-	.description { margin: 0; font-size: var(--text-secondary); color: #4a4a4a; }
-	small {
-		display: block;
-		font-family: var(--mono);
-		font-size: var(--text-micro);
-		color: var(--muted);
-	}
-</style>

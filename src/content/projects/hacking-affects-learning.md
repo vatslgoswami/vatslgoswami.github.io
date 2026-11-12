@@ -8,6 +8,7 @@ links:
   - { label: GitHub, url: "https://github.com/vatslgoswami/hacking-affects-learning" }
 featured: true
 pinned: true
+wordCount: 4999
 detail: true
 ---
 Note: I use the words ‘agent’ and ‘policy’ almost interchangeably across this blog. RL folks, please pardon me xD.

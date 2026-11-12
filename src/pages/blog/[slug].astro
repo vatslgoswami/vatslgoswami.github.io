@@ -1,43 +1,22 @@
 ---
 import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
-import Base from '../../layouts/Base.astro';
-import ArticleBody from '../../components/ArticleBody.astro';
-import ContentTitle from '../../components/ContentTitle.astro';
-import TagList from '../../components/TagList.astro';
+import ArticlePage from '../../components/ArticlePage.astro';
 import { getPosts } from '../../lib/content';
+import { countArticleWords } from '../../lib/word-count';
 
-// Posts with externalUrl live elsewhere, so only native posts get a page.
 export async function getStaticPaths() {
 	const posts = await getPosts();
-	return posts
-		.filter((post) => !post.data.externalUrl)
+	return posts.filter((post) => !post.data.externalUrl)
 		.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
 
-interface Props {
-	post: CollectionEntry<'blog'>;
-}
-
+interface Props { post: CollectionEntry<'blog'>; }
 const { post } = Astro.props;
-const { title, date, description, tags = [] } = post.data;
+const { title, date, description, tags = [], wordCount } = post.data;
 const { Content } = await render(post);
-const label = date.toLocaleDateString('en-US', {
-	month: 'short',
-	day: '2-digit',
-	year: 'numeric',
-	timeZone: 'UTC',
-});
 ---
 
-<Base title={title} description={description}>
-	<article>
-		<header>
-			<ContentTitle {title} level="h1" />
-			<time class="page-meta" datetime={date.toISOString().slice(0, 10)}>{label}</time>
-			<TagList {tags} />
-		</header>
-		<ArticleBody backHref="/blog/" backLabel="All posts"><Content /></ArticleBody>
-	</article>
-</Base>
-
+<ArticlePage {title} {description} year={date.getUTCFullYear()} kind="Blog" wordCount={wordCount ?? countArticleWords(post.body ?? '')} {tags} backHref="/blog/" backLabel="All posts">
+	<Content />
+</ArticlePage>

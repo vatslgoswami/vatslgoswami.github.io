@@ -5,6 +5,8 @@
 title: Post title
 date: 2026-10-25
 description: Optional one-line summary.
+tags: [Theoretical RL, Alignment] # optional
+# wordCount: 4999 # optional override; otherwise counted from the article
 # externalUrl: https://medium.com/@you/post # set this to list a post hosted elsewhere; the body can then be empty
 draft: true
 ---

@@ -446,7 +446,7 @@ J(\pi) &= \mathbb{E}_{y\sim\pi}[r(y)-\beta D_{\mathrm{KL}}(\pi||\pi_0)] \\
 \end{aligned}
 $$
 
-**Step 1: Build a candidate distribution**
+#### Step 1: Build a candidate distribution
 
 Remember the optimal probabilities in our toy model:
 
@@ -472,7 +472,7 @@ $$
 
 For each response $y$, this takes gives us a valid probability with $(0,1)$ and thus this is a valid distribution.
 
-**Step 2: Express the reward through our candidate**
+#### Step 2: Express the reward through our candidate
 
 Divide the candidate with the reference and take the logarithm on both sides:
 
@@ -500,7 +500,7 @@ $$
 
 In the next step, we will substitute this into the objective.
 
-**Step 3: Rewrite the objective**
+#### Step 3: Rewrite the objective
 
 <span id="eq-7"></span>
 

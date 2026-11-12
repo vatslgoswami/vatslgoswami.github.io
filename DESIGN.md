@@ -17,7 +17,7 @@ Keep the site minimal, readable, and consistent. Use IBM Plex Sans for body text
 | List metadata and chips | `--text-small` | 12px |
 | Tags and compact labels | `--text-micro` | 11px |
 
-Use `.year-label` and `.year-heading` for year group headings. Use `YearMeta.astro` for the common year-and-kind row; list metadata uses the small, grey `--text-small` style rather than the heading style. `ContentTitle.astro` provides the shared project and blog list title and project detail title. Use `.page-title` and `.page-meta` for other detail headings. `ArticleBody.astro` renders detail content and the back link with a shared reading width; its styles use `.prose` and `.back-link`.
+Use `.year-label` and `.year-heading` for year group headings. Use `YearMeta.astro` for the common year-and-kind row; list metadata uses the small, grey `--text-small` style rather than the heading style. `ContentTitle.astro` provides shared project and blog list and detail titles. Use `.page-meta` for detail metadata; `TagList.astro` provides shared tags. `ArticleBody.astro` renders detail content and the back link with a shared reading width; its styles use `.prose` and `.back-link`.
 
 ## Components and implementation
 

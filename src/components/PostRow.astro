@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import ContentTitle from './ContentTitle.astro';
+import TagList from './TagList.astro';
 import YearMeta from './YearMeta.astro';
 
 interface Props {
@@ -20,13 +21,11 @@ const host = externalUrl ? new URL(externalUrl).hostname.replace(/^www\./, '') :
 	<ContentTitle {title} {href} level="h3" />
 	{host && <small>on {host} <span aria-label="external link">↗</span></small>}
 	{tags.length > 0 && description && <p class="description">{description}</p>}
-	{tags.length > 0 && <div class="tags">{tags.map((tag) => <span>{tag}</span>)}</div>}
+	<TagList {tags} />
 </li>
 
 <style>
 	.description { margin: 0; font-size: var(--text-secondary); color: #4a4a4a; }
-	.tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-	.tags span { font-family: var(--mono); font-size: var(--text-micro); padding: 1px 8px; border-radius: 999px; background: var(--mustard-soft); color: var(--mustard-ink); }
 	small {
 		display: block;
 		font-family: var(--mono);
